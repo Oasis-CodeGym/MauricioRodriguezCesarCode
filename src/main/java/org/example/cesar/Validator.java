@@ -93,7 +93,7 @@ public class Validator {
         return Files.exists(filePath);
     }
 
-    private static final BiFunction<Character, Integer, Integer> calcularNuevaLetra =
+    private static final BiFunction<Character, Integer, Integer> desplazarLetra =
             (letra, key) -> (ALPHABET.get(letra) + (key % 27) > 27)
                     ? ALPHABET.get(letra) + (key % 27) - 27
                     : ALPHABET.get(letra) + (key % 27);
@@ -104,11 +104,11 @@ public class Validator {
             if (Character.isUpperCase(character)) {
                 // Desplazamiento para letras mayúsculas
                 character = Character.toLowerCase(character);
-                nuevaLetra = calcularNuevaLetra.apply(character, key);
-                character = Character.toUpperCase(ALFABETO[nuevaLetra]);//devuelve una letra
+                nuevaLetra = desplazarLetra.apply(character, key);
+                character = Character.toUpperCase(ALFABETO[nuevaLetra]);
             } else if (Character.isLowerCase(character)) {
                 // Desplazamiento para letras minúsculas
-                nuevaLetra = calcularNuevaLetra.apply(character, key);
+                nuevaLetra = desplazarLetra.apply(character, key);
                 character = ALFABETO[nuevaLetra]; //Verificación
             }
             cifrado.append(character);
