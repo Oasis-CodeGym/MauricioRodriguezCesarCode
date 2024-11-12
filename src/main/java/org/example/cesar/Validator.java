@@ -45,12 +45,12 @@ public class Validator {
     }
 
     //Verificar si es número
-    public static int checkNumber(String option){
-        int opcion = 0;
-        if(option.matches("\\d+")) {
-            opcion = Integer.parseInt(option);
+    public static int checkNumber(String valor){
+        int num = 0;
+        if(valor.matches("\\d+")) {
+            num = Integer.parseInt(valor);
         }
-        return opcion;
+        return num;
     }
 
     //Leer entrada de datos para validar
@@ -63,18 +63,14 @@ public class Validator {
                     // Verifica si la entrada es un número entero
                     String dato = entrada.nextLine().trim();
                     clave = checkNumber(dato);
-//                    if(dato.matches("\\d+")) {
-//                        clave = Integer.parseInt(dato);
                         if(isAValidKey(clave)) {
                             break;  // Sale del bucle si el número es válido
                         }
-//                    }
                 } catch(InputMismatchException e){
                     System.out.println("Entrada no válida. Debes ingresar un número entero.");
                     entrada.next(); // Descarta la entrada no válida
                 }
             }
-//            entrada.close();
             return clave;
         }
 

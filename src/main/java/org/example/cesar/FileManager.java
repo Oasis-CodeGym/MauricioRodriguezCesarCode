@@ -24,36 +24,6 @@ public class FileManager {
                 while ((line = reader.readLine()) != null) {
                     processedLine = line;
                     procesar(processedLine, key, cifrado);
-/*
-                    for (char character : processedLine.toCharArray()) {
-                        if (Character.isUpperCase(character)) {
-                        // Desplazamiento para letras mayúsculas
-                            char minuscula = Character.toLowerCase(character);
-                            int nuevaLetra;
-                            if(((ALPHABET.get(minuscula))+key)>27){
-                                nuevaLetra = ALPHABET.get(minuscula) + (key%27) - 27;
-                            } else {
-                                nuevaLetra = ALPHABET.get(minuscula) + (key%27);
-                            }
-                            char encryptedChar = Character.toUpperCase(ALFABETO[nuevaLetra]);
-                            cifrado.append(encryptedChar);
-                        } else if (Character.isLowerCase(character)) {
-                        // Desplazamiento para letras minúsculas
-                            if(((ALPHABET.get(character))+key)>27){//z, 26+4=30, 30-26 = 4, 4 = D alpabeto
-                                int nuevaLetra = ALPHABET.get(character) + (key%27) - 27;
-                                char encryptedChar = ALFABETO[nuevaLetra];
-                                cifrado.append(encryptedChar);
-                            } else{
-                                int nuevaLetra = ALPHABET.get(character) + (key%27);//a=0,0+4=4, 4=e
-                                char encryptedChar = ALFABETO[nuevaLetra]; //
-                                cifrado.append(encryptedChar);
-                            }
-                        } else {
-                        // Mantener otros caracteres sin cambio: espacios, puntos, comas
-                            cifrado.append(character);
-                        }
-                    }
-*/
                     cifrado.append(System.lineSeparator());
                 }
             } catch (IOException e) {
@@ -63,7 +33,6 @@ public class FileManager {
         } else {
             System.out.println("El archivo de entrada no existe: " + inputPath);
         }
-//        return new String(cifrado);
         return cifrado.toString();
     }
 
