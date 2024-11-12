@@ -1,19 +1,17 @@
 package org.example.cesar;
 
 import java.io.*;
-import java.net.StandardSocketOptions;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.Set;
-
-import org.example.cesar.Validator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.example.cesar.Validator.*;
 
 public class FileManager {
+    private static final Logger LOGGER = Logger.getLogger(FileManager.class.getName());
+
     public static String readFile(String filePath, int key) throws IOException {
         Path inputPath = Paths.get(filePath);
         StringBuilder cifrado = new StringBuilder();
@@ -25,26 +23,28 @@ public class FileManager {
                 String processedLine;
                 while ((line = reader.readLine()) != null) {
                     processedLine = line;
+                    procesar(processedLine, key, cifrado);
+/*
                     for (char character : processedLine.toCharArray()) {
                         if (Character.isUpperCase(character)) {
                         // Desplazamiento para letras mayúsculas
                             char minuscula = Character.toLowerCase(character);
                             int nuevaLetra;
-                            if(((alphabet.get(minuscula))+key)>27){
-                                nuevaLetra = alphabet.get(minuscula) + (key%27) - 27;
+                            if(((ALPHABET.get(minuscula))+key)>27){
+                                nuevaLetra = ALPHABET.get(minuscula) + (key%27) - 27;
                             } else {
-                                nuevaLetra = alphabet.get(minuscula) + (key%27);
+                                nuevaLetra = ALPHABET.get(minuscula) + (key%27);
                             }
                             char encryptedChar = Character.toUpperCase(ALFABETO[nuevaLetra]);
                             cifrado.append(encryptedChar);
                         } else if (Character.isLowerCase(character)) {
                         // Desplazamiento para letras minúsculas
-                            if(((alphabet.get(character))+key)>27){//z, 26+4=30, 30-26 = 4, 4 = D alpabeto
-                                int nuevaLetra = alphabet.get(character) + (key%27) - 27;
+                            if(((ALPHABET.get(character))+key)>27){//z, 26+4=30, 30-26 = 4, 4 = D alpabeto
+                                int nuevaLetra = ALPHABET.get(character) + (key%27) - 27;
                                 char encryptedChar = ALFABETO[nuevaLetra];
                                 cifrado.append(encryptedChar);
                             } else{
-                                int nuevaLetra = alphabet.get(character) + (key%27);//a=0,0+4=4, 4=e
+                                int nuevaLetra = ALPHABET.get(character) + (key%27);//a=0,0+4=4, 4=e
                                 char encryptedChar = ALFABETO[nuevaLetra]; //
                                 cifrado.append(encryptedChar);
                             }
@@ -53,16 +53,18 @@ public class FileManager {
                             cifrado.append(character);
                         }
                     }
+*/
                     cifrado.append(System.lineSeparator());
                 }
-        //    return new String(cifrado);
             } catch (IOException e) {
-            e.printStackTrace();
+                //e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "Error leyendo el archivo", e);
             }
         } else {
-            System.out.println("El archivo de entrada no existe: " + inputPath.toString());
+            System.out.println("El archivo de entrada no existe: " + inputPath);
         }
-        return new String(cifrado);
+//        return new String(cifrado);
+        return cifrado.toString();
     }
 
     public static void writeFile(String content, String filePath) {

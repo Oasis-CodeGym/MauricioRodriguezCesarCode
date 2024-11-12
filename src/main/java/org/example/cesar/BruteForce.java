@@ -9,7 +9,7 @@ public class BruteForce {
         for(int i = 1; i <= 27; i++){
             try {
                 String mensaje = readFile(filePath, 27 - i); //decifrar
-                System.out.println("Descifrado " + i + ":");
+                System.out.println("Mensaje descifrado con clave " + i + ":");
                 System.out.println(mensaje);
             } catch (IOException e) {
                 throw new RuntimeException(e);

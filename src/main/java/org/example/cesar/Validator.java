@@ -4,71 +4,77 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Map;
 import java.util.Scanner;
+import java.util.function.BiFunction;
 
-import org.example.cesar.FileManager;
 public class Validator {
 
     public static final char[] ALFABETO = {' ','a','b','c','d','e','f','g','h','i',
                                             'j','k','l','m','n','ñ','o','p','q',
                                             'r','s','t','u','v','w','x','y','z'};
-    public static HashMap<Character,Integer> alphabet = new HashMap<>();
+    public static final HashMap<Character,Integer> ALPHABET = new HashMap<>();
 
     static {
-        alphabet.put('a',1);
-        alphabet.put('b',2);
-        alphabet.put('c',3);
-        alphabet.put('d',4);
-        alphabet.put('e',5);
-        alphabet.put('f',6);
-        alphabet.put('g',7);
-        alphabet.put('h',8);
-        alphabet.put('i',9);
-        alphabet.put('j',10);
-        alphabet.put('k',11);
-        alphabet.put('l',12);
-        alphabet.put('m',13);
-        alphabet.put('n',14);
-        alphabet.put('ñ',15);
-        alphabet.put('o',16);
-        alphabet.put('p',17);
-        alphabet.put('q',18);
-        alphabet.put('r',19);
-        alphabet.put('s',20);
-        alphabet.put('t',21);
-        alphabet.put('u',22);
-        alphabet.put('v',23);
-        alphabet.put('w',24);
-        alphabet.put('x',25);
-        alphabet.put('y',26);
-        alphabet.put('z',27);
+        ALPHABET.put('a',1);
+        ALPHABET.put('b',2);
+        ALPHABET.put('c',3);
+        ALPHABET.put('d',4);
+        ALPHABET.put('e',5);
+        ALPHABET.put('f',6);
+        ALPHABET.put('g',7);
+        ALPHABET.put('h',8);
+        ALPHABET.put('i',9);
+        ALPHABET.put('j',10);
+        ALPHABET.put('k',11);
+        ALPHABET.put('l',12);
+        ALPHABET.put('m',13);
+        ALPHABET.put('n',14);
+        ALPHABET.put('ñ',15);
+        ALPHABET.put('o',16);
+        ALPHABET.put('p',17);
+        ALPHABET.put('q',18);
+        ALPHABET.put('r',19);
+        ALPHABET.put('s',20);
+        ALPHABET.put('t',21);
+        ALPHABET.put('u',22);
+        ALPHABET.put('v',23);
+        ALPHABET.put('w',24);
+        ALPHABET.put('x',25);
+        ALPHABET.put('y',26);
+        ALPHABET.put('z',27);
+    }
+
+    //Verificar si es número
+    public static int checkNumber(String option){
+        int opcion = 0;
+        if(option.matches("\\d+")) {
+            opcion = Integer.parseInt(option);
+        }
+        return opcion;
     }
 
     //Leer entrada de datos para validar
         public static int toValid(){
-            int clave = 0;
+            int clave;
             Scanner entrada = new Scanner(System.in);
             while(true){
                 System.out.println("Digite un número válido para la clave César:");
                 try{
                     // Verifica si la entrada es un número entero
-                    //key = entrada.nextInt();
                     String dato = entrada.nextLine().trim();
-                    if(dato.matches("\\d+")) {
-                        clave = Integer.parseInt(dato);
+                    clave = checkNumber(dato);
+//                    if(dato.matches("\\d+")) {
+//                        clave = Integer.parseInt(dato);
                         if(isAValidKey(clave)) {
                             break;  // Sale del bucle si el número es válido
-                        } //else {
-                        //  System.out.println("Digite un número válido.");
-                        //entrada.next();
-                        //}
-                    }
+                        }
+//                    }
                 } catch(InputMismatchException e){
                     System.out.println("Entrada no válida. Debes ingresar un número entero.");
                     entrada.next(); // Descarta la entrada no válida
                 }
             }
+//            entrada.close();
             return clave;
         }
 
@@ -84,10 +90,28 @@ public class Validator {
 
     public static boolean isFileExists(Path filePath) {
         // Check if the file exists
-        if(Files.exists(filePath)){
-            return true;
-        } else {
-            return false;
+        return Files.exists(filePath);
+    }
+
+    private static final BiFunction<Character, Integer, Integer> calcularNuevaLetra =
+            (letra, key) -> (ALPHABET.get(letra) + (key % 27) > 27)
+                    ? ALPHABET.get(letra) + (key % 27) - 27
+                    : ALPHABET.get(letra) + (key % 27);
+
+    public static void procesar(String processedLine, int key, StringBuilder cifrado){
+        for (char character : processedLine.toCharArray()) {
+            int nuevaLetra;
+            if (Character.isUpperCase(character)) {
+                // Desplazamiento para letras mayúsculas
+                character = Character.toLowerCase(character);
+                nuevaLetra = calcularNuevaLetra.apply(character, key);
+                character = Character.toUpperCase(ALFABETO[nuevaLetra]);//devuelve una letra
+            } else if (Character.isLowerCase(character)) {
+                // Desplazamiento para letras minúsculas
+                nuevaLetra = calcularNuevaLetra.apply(character, key);
+                character = ALFABETO[nuevaLetra]; //Verificación
+            }
+            cifrado.append(character);
         }
     }
 }

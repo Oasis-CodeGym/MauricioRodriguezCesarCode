@@ -7,7 +7,7 @@ import java.util.Scanner;
 import static org.example.cesar.BruteForce.decryptByBruteForce;
 import static org.example.cesar.FileManager.readFile;
 import static org.example.cesar.FileManager.writeFile;
-import static org.example.cesar.Validator.isAValidKey;
+import static org.example.cesar.Validator.checkNumber;
 import static org.example.cesar.Validator.toValid;
 
 //PENDIENTE
@@ -24,29 +24,45 @@ public class MainApp {
         System.out.println("2. Descifrar");
         System.out.println("3. Descifrar por método Brute Force");
         System.out.println("4. Salir");
-        System.out.println("Seleccione una opción: ");
+        System.out.println("Seleccione una opción del menú: ");
     }
     public static void main(String[] args) {
 
         String inputFilePath = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\entrada.txt";
         String outFilePath = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\salida.txt";
 
-        int opcion = 0; //Seleccionar la opción a realizar
-        int key = 0;
+        int opcion; //Seleccionar la opción a realizar
+        int key;
+        String mensaje;
 
         Scanner entrada = new Scanner(System.in);
 
         menuPrincipal();
-        opcion = entrada.nextInt();
+
+        while(true){
+            try{
+                // Verifica si la entrada es un número entero
+                String option = entrada.nextLine().trim();
+                opcion = checkNumber(option);
+//                if(option.matches("\\d+")) {
+//                    opcion = Integer.parseInt(option);
+                if(opcion > 0 && opcion < 5) {
+                    break;  // Sale del bucle si el número es válido
+                }
+//                }
+            } catch(InputMismatchException e){
+                System.out.println("Entrada no válida. Debes ingresar un número entero.");
+                entrada.next(); // Descarta la entrada no válida
+                menuPrincipal();
+            }
+        }
 
         do {
             switch (opcion) {
                 case 1:
                     key = toValid();
-                    String mensaje;
                     try {
                         mensaje = readFile(inputFilePath, key);
-//                        writeFile(mensaje, outFilePath, key);
                         writeFile(mensaje, outFilePath);
                         System.out.println(mensaje);
                     } catch (IOException e) {
@@ -69,9 +85,22 @@ public class MainApp {
                     opcion = 0;
                     break;
                 default:
-                    System.out.println("Seleccione una opción del menú: ");
                     menuPrincipal();
-                    opcion = entrada.nextInt();
+                    try{
+                        // Verifica si la entrada es un número entero
+                        String option = entrada.nextLine().trim();
+                        opcion = checkNumber(option);
+//                        if(option.matches("\\d+")) {
+//                            opcion = Integer.parseInt(option);
+                        if(opcion > 0 && opcion < 5) {
+                            break;  // Sale del bucle si el número es válido
+                        }
+//                        }
+                    } catch(InputMismatchException e){
+                        System.out.println("Entrada no válida. Debes ingresar un número entero.");
+                        entrada.next(); // Descarta la entrada no válida
+                        menuPrincipal();
+                    }
                     break;
             }
         } while(!(opcion==4));
