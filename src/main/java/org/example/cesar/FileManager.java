@@ -15,25 +15,16 @@ import static org.example.cesar.Validator.*;
 
 public class FileManager {
     public static String readFile(String filePath, int key) throws IOException {
-//        Path path = Paths.get(filePath);
-//        byte[] bytes = Files.readAllBytes(path);
-//        return new String(bytes, StandardCharsets.UTF_8);
         Path inputPath = Paths.get(filePath);
         StringBuilder cifrado = new StringBuilder();
-//        boolean existe = isFileExists(inputPath);
         //Verifica si existe el archivo
-//        if(existe){
         if(isFileExists(inputPath)){
-//        if(Files.exists(inputPath)) {//
             try (InputStream inputStream = Files.newInputStream(inputPath);
-                BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(inputStream))) {
-//            try(BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))){//
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
                 String line;
                 String processedLine;
-//            int key = 4;
                 while ((line = reader.readLine()) != null) {
                     processedLine = line;
-//                char[] chars = processedLine.toCharArray();
                     for (char character : processedLine.toCharArray()) {
                         if (Character.isUpperCase(character)) {
                         // Desplazamiento para letras mayúsculas
@@ -45,33 +36,20 @@ public class FileManager {
                                 nuevaLetra = alphabet.get(minuscula) + (key%27);
                             }
                             char encryptedChar = Character.toUpperCase(ALFABETO[nuevaLetra]);
-//                            char encryptedChar = (char) ((character + key - 'A') % 27 + 'A');
                             cifrado.append(encryptedChar);
                         } else if (Character.isLowerCase(character)) {
                         // Desplazamiento para letras minúsculas
-                            //int posicion = ((character + key - ALFABETO[0]) % 27 + ALFABETO[0]);
-                            //System.out.println("La posición de la letra es: " + posicion);
                             if(((alphabet.get(character))+key)>27){//z, 26+4=30, 30-26 = 4, 4 = D alpabeto
                                 int nuevaLetra = alphabet.get(character) + (key%27) - 27;
-                                //System.out.println("La nueva letra es " + ALFABETO[nuevaLetra]);
                                 char encryptedChar = ALFABETO[nuevaLetra];
                                 cifrado.append(encryptedChar);
-                            }/*else if((alphabet.get(character)+key)==26){//z, 26+4=30, 30-26 = 4, 4 = D alpabeto
-//                                int nuevaLetra = alphabet.get(character) + key - 26;
-                                int nuevaLetra = alphabet.get(character) + key - 26;
-                                System.out.println("La nueva letra es " + ALFABETO[nuevaLetra]);
-                                char encryptedChar = ALFABETO[nuevaLetra];
-                                cifrado.append(encryptedChar);
-                            } */else{
-//                                int nuevaLetra = alphabet.get(character) + (key%26);//a=0,0+4=4, 4=e
+                            } else{
                                 int nuevaLetra = alphabet.get(character) + (key%27);//a=0,0+4=4, 4=e
                                 char encryptedChar = ALFABETO[nuevaLetra]; //
                                 cifrado.append(encryptedChar);
                             }
-//sirve//                            char encryptedChar = (char) ((character + key - 'a') % 26 + 'a');
-//sirve//                            cifrado.append(encryptedChar);
                         } else {
-                        // Mantener otros caracteres sin cambio
+                        // Mantener otros caracteres sin cambio: espacios, puntos, comas
                             cifrado.append(character);
                         }
                     }
@@ -83,30 +61,30 @@ public class FileManager {
             }
         } else {
             System.out.println("El archivo de entrada no existe: " + inputPath.toString());
-//            cifrado = "El archivo de entrada no existe: " + inputPath.toString();
         }
         return new String(cifrado);
-//        System.out.println(cifrado);
     }
 
-    public static void writeFile(String content, String filePath, int key) {
-        // Logic for writing a file
-//        try(BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath))){
+    public static void writeFile(String content, String filePath) {
+//    public static void writeFile(String content, String filePath, int key) {
         Path outputPath = Paths.get(filePath); // Archivo de salida
-        if (!Files.exists(outputPath)) {
-            try{
+        //!Files.exists(outputPath) es redundante porque Files.newBufferedWriter:
+        //- Verifica internamente si el archivo existe.
+        //- Lo crea si es necesario.
+        try{
+            if (!Files.exists(outputPath)) {
                 Files.createFile(outputPath); // Crea el archivo si no existe
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
-        }
-        try (OutputStream outputStream = Files.newOutputStream(outputPath);
-             BufferedWriter writer = new BufferedWriter(new java.io.OutputStreamWriter(outputStream))) {
-                writer.write(content);
-                writer.newLine(); // Agrega una nueva línea para cada línea procesada
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        //
+        try (OutputStream outputStream = Files.newOutputStream(outputPath);
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            writer.write(content);
+            writer.newLine(); // Agrega una nueva línea para cada línea procesada
+        } catch (IOException e) {
+            throw new RuntimeException("Error al escribir en el archivo", e);        }
     }
 }
 
