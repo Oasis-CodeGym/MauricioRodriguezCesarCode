@@ -19,10 +19,14 @@ public class BruteForce {
                 keywords.add("con");
                 keywords.add("de");
                 keywords.add("desde");
+                keywords.add("el");
                 keywords.add("para");
                 keywords.add("pero");
                 keywords.add("por");
+                keywords.add("que");
+                keywords.add("se");
                 keywords.add("sin");
+                keywords.add("una");
                 String[] words = mensaje.toLowerCase().split("\\W+");
                     for (String word : words) {
                         if (keywords.contains(word)) {
