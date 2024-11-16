@@ -1,5 +1,7 @@
 package org.example.cesar;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -94,7 +96,7 @@ public class Validator {
                     ? ALPHABET.get(letra) + (key % 27) - 27
                     : ALPHABET.get(letra) + (key % 27);
 
-    public static void procesar(String processedLine, int key, StringBuilder cifrado){
+    public static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
         for (char character : processedLine.toCharArray()) {
             int nuevaLetra;
             if (Character.isUpperCase(character)) {

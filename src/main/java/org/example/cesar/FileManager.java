@@ -19,12 +19,10 @@ public class FileManager {
         if(isFileExists(inputPath)){
             try (InputStream inputStream = Files.newInputStream(inputPath);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-                String line;
                 String processedLine;
-                while ((line = reader.readLine()) != null) {
-                    processedLine = line;
+                while ((processedLine = reader.readLine()) != null) {
                     procesar(processedLine, key, cifrado);
-                    cifrado.append(System.lineSeparator());
+                    cifrado.append(System.lineSeparator()); //salto de línea
                 }
             } catch (IOException e) {
                 //e.printStackTrace();
@@ -37,7 +35,6 @@ public class FileManager {
     }
 
     public static void writeFile(String content, String filePath) {
-//    public static void writeFile(String content, String filePath, int key) {
         Path outputPath = Paths.get(filePath); // Archivo de salida
         //!Files.exists(outputPath) es redundante porque Files.newBufferedWriter:
         //- Verifica internamente si el archivo existe.
