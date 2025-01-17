@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.function.BiFunction;
+import static org.example.cesar.Menu.menuPrincipal;
 
 /**
  * Clase para validar el número de clave de desplazamiento de las letras del mensaje dentro de un rango de numeración
@@ -54,6 +55,35 @@ public class Validator {
         ALPHABET.put('x',25);
         ALPHABET.put('y',26);
         ALPHABET.put('z',27);
+    }
+
+    /**
+     * El metodo esNumero valida que se ingrese un número entero, procesando datos no deseados hasta que se ingrese
+     * una opción del menú entre 1 y 4.
+     * @param entrada variable de tipo Scanner para capturar la entrada de datos del usuario.
+     * @return opcion regresa un número entero válido, correspondiente a una de las opciones del menú.
+     */
+    public static int esNumero(@org.jetbrains.annotations.NotNull Scanner entrada) {
+        int opcion;
+        while (true) {
+            try {
+                // Verifica si la entrada es un número entero
+                String option = entrada.nextLine().trim();
+                opcion = checkNumber(option);
+                if (opcion > 0 && opcion < 5) {
+                    break;  // Sale del bucle si el número es válido
+                }
+                else{
+                    System.out.println("Ingrese un número válido.");
+                    menuPrincipal();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada no válida. Debes ingresar un número entero.");
+                entrada.next(); // Descarta el dato no valido de la entrada
+                menuPrincipal();
+            }
+        }
+        return opcion;
     }
 
 

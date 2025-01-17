@@ -1,39 +1,46 @@
 package org.example.cesar;
 
-import static org.example.cesar.Menu.seleccionar;
+import java.io.IOException;
+import java.util.Scanner;
+
+import static org.example.cesar.BruteForce.decryptByBruteForce;
+import static org.example.cesar.FileManager.readFile;
+import static org.example.cesar.FileManager.writeFile;
+import static org.example.cesar.Validator.toValid;
+import static org.example.cesar.Validator.esNumero;
 
 //pasos para trabajar con git en intellij
 //https://www.youtube.com/watch?v=G5tvUmPe7ok
 
 /**
-* Clase principal que muestra el menú de opciones para cifrado y descifrado mediante código César.
-* **/
-public class MainApp {
+ * Clase principal que muestra el menú de opciones para cifrado y descifrado mediante código César.
+ * **/
+public class Menu {
     /**
-    * Ruta del archivo que tiene el mensaje a encriptar
-    **/
+     * Ruta del archivo que tiene el mensaje a encriptar
+     **/
     public static final String INPUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\entrada.txt";
     /**
      * Ruta del archivo que almacena el mensaje encriptado
      */
     public static final String OUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\salida.txt";
 
-//    /**
-//     * Menú de opciones
-//     * 1. Cifrado de mensaje contenido en un archivo de texto, digitando un número entero para encriptar el mensaje.
-//     * 2. Descifrado de un archivo de texto, a partir de un número entero conocido, para desencriptar el mensaje real.
-//     * 3. Descifrado mediante método de Fuerza Bruta, mediante iteración de números del 1 al 26, hasta descubrir
-//     * el mensaje real, mediante comparación de palabras contenidos en el mensaje, con palabras
-//     * almacenadas en un diccionario de datos.
-//     */
-//    private static void menuPrincipal() {
-//        System.out.println("Menú código César: ");
-//        System.out.println("1. Cifrar");
-//        System.out.println("2. Descifrar");
-//        System.out.println("3. Descifrar por método Brute Force");
-//        System.out.println("4. Salir");
-//        System.out.println("Seleccione una opción del menú: ");
-//    }
+    /**
+     * Menú de opciones
+     * 1. Cifrado de mensaje contenido en un archivo de texto, digitando un número entero para encriptar el mensaje.
+     * 2. Descifrado de un archivo de texto, a partir de un número entero conocido, para desencriptar el mensaje real.
+     * 3. Descifrado mediante método de Fuerza Bruta, mediante iteración de números del 1 al 26, hasta descubrir
+     * el mensaje real, mediante comparación de palabras contenidos en el mensaje, con palabras
+     * almacenadas en un diccionario de datos.
+     */
+    public static void menuPrincipal() {
+        System.out.println("Menú código César: ");
+        System.out.println("1. Cifrar");
+        System.out.println("2. Descifrar");
+        System.out.println("3. Descifrar por método Brute Force");
+        System.out.println("4. Salir");
+        System.out.println("Seleccione una opción del menú: ");
+    }
 
 //    /**
 //     * El metodo esNumero valida que se ingrese un número entero, procesando datos no deseados hasta que se ingrese
@@ -69,10 +76,8 @@ public class MainApp {
      * Muestra el menú de opciones y captura las entradas del usuario para ejecutar las acciones correspondientes.
      * @param args argumentos de la línea de comandos, que se agrega por defecto.
      */
-    public static void main(String[] args) {
+    public static void seleccionar() {
 
-        seleccionar();
-/*
         int opcion; //Seleccionar la opción a realizar
         int key; //Número de clave de desplazamiento de las letras en el mensaje
         String mensaje;
@@ -117,10 +122,9 @@ public class MainApp {
                     opcion = esNumero(entrada);
             }
         } while(!(opcion==4)); //Termina el programa al seleccionar la opción del menú correspondiente
+
         entrada.close();
         System.out.println("Fin del programa.");
-*/
-
     }
 }
 
