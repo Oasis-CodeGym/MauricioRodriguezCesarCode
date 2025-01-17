@@ -19,11 +19,11 @@ public class Menu {
     /**
      * Ruta del archivo que tiene el mensaje a encriptar
      **/
-    public static final String INPUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\entrada.txt";
+    private static final String INPUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\entrada.txt";
     /**
      * Ruta del archivo que almacena el mensaje encriptado
      */
-    public static final String OUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\salida.txt";
+    private static final String OUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\salida.txt";
 
     /**
      * Menú de opciones
@@ -42,39 +42,9 @@ public class Menu {
         System.out.println("Seleccione una opción del menú: ");
     }
 
-//    /**
-//     * El metodo esNumero valida que se ingrese un número entero, procesando datos no deseados hasta que se ingrese
-//     * una opción del menú entre 1 y 4.
-//     * @param entrada variable de tipo Scanner para capturar la entrada de datos del usuario.
-//     * @return opcion regresa un número entero válido, correspondiente a una de las opciones del menú.
-//     */
-//    private static int esNumero(@org.jetbrains.annotations.NotNull Scanner entrada) {
-//        int opcion;
-//        while (true) {
-//            try {
-//                // Verifica si la entrada es un número entero
-//                String option = entrada.nextLine().trim();
-//                opcion = checkNumber(option);
-//                if (opcion > 0 && opcion < 5) {
-//                    break;  // Sale del bucle si el número es válido
-//                }
-//                else{
-//                    System.out.println("Ingrese un número válido.");
-//                    menuPrincipal();
-//                }
-//            } catch (InputMismatchException e) {
-//                System.out.println("Entrada no válida. Debes ingresar un número entero.");
-//                entrada.next(); // Descarta el dato no valido de la entrada
-//                menuPrincipal();
-//            }
-//        }
-//        return opcion;
-//    }
-
     /**
-     * Entrada principal del programa.
+     * Entrada al menu del programa.
      * Muestra el menú de opciones y captura las entradas del usuario para ejecutar las acciones correspondientes.
-     * @param args argumentos de la línea de comandos, que se agrega por defecto.
      */
     public static void seleccionar() {
 

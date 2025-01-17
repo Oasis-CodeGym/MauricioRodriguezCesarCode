@@ -15,14 +15,12 @@ public class FileManager {
      * Logger: para registrar errores o eventos relevantes
      * y poderlos almacenar en un archivo.
      */
-//    private static final Logger LOGGER = Logger.getLogger(FileManager.class.getName());
 
     public static String readFile(String filePath, int key) throws IOException {
         Path inputPath = Paths.get(filePath);
         StringBuilder cifrado = new StringBuilder();
 
         //Verifica si existe el archivo
-//        if(isFileExists(inputPath)){
             try (InputStream inputStream = Files.newInputStream(inputPath);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
                 String processedLine;
@@ -30,16 +28,11 @@ public class FileManager {
                     procesar(processedLine, key, cifrado);
                     cifrado.append(System.lineSeparator()); //salto de línea
                 }
-                //FileNotFoundException y No SuchFileException es subclase de IOException
-//            } catch (IOException | FileWriteException | FileNotFoundException e ) {
             } catch (IOException | FileWriteException e ) {
                 //e.printStackTrace();
                 //LOGGER.log(Level.SEVERE, "Error leyendo el archivo", e);
                 System.out.println("Error al escribir en el archivo: " + e);
             }
-        //} else {
-        //    System.out.println("El archivo de entrada no existe: " + inputPath);
-       // }
         return cifrado.toString();
     }
 
