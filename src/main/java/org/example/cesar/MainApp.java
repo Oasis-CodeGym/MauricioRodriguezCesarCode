@@ -1,6 +1,7 @@
 package org.example.cesar;
 
-import static org.example.cesar.Menu.seleccionar;
+import static org.example.cesar.Menu.iniciar;
+import static org.example.cesar.Validator.convertirAHashMap;
 
 //pasos para trabajar con git en intellij
 //https://www.youtube.com/watch?v=G5tvUmPe7ok
@@ -15,7 +16,7 @@ public class MainApp {
      * @param args argumentos de la línea de comandos, que se agrega por defecto.
      */
     public static void main(String[] args) {
-        seleccionar();
+        iniciar();
     }
 }
 

@@ -2,10 +2,9 @@ package org.example.cesar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.function.BiFunction;
 import static org.example.cesar.Menu.menuPrincipal;
@@ -18,14 +17,28 @@ public class Validator {
     /**
      * Arreglo de tipo char que contiene las letras del alfabeto en español incluyendo la letra ñ
      */
-    public static final char[] ALFABETO = {' ','a','b','c','d','e','f','g','h','i',
-                                            'j','k','l','m','n','ñ','o','p','q',
-                                            'r','s','t','u','v','w','x','y','z'};
+    public static final char[] ALFABETO = {'ª','a','b','c','d','e','f','g','h','i',
+                                            'j','k','l','m','n','ñ','o','p','q','r',
+                                            's','t','u','v','w','x','y','z','á','é',
+                                            'í','ó','ú',' ','.',','};
     /**
      * Arreglo de tipo HashMap que contiene las letras del alfabeto en español como clave y un entero asociado al número
      * de posición correspondiente
      */
-    public static final HashMap<Character,Integer> ALPHABET = new HashMap<>();
+
+    Map<Character, Integer> alfabetoMap = convertirAHashMap();
+
+    public static HashMap<Character, Integer> convertirAHashMap() {
+        HashMap<Character, Integer> alfabetoMap = new HashMap<>();
+
+        for (int i = 0; i < ALFABETO.length; i++) {
+            alfabetoMap.put(ALFABETO[i], i);
+        }
+        return alfabetoMap;
+    }
+
+    public static final HashMap<Character,Integer> ALPHABET = convertirAHashMap();
+/*    public static final HashMap<Character,Integer> ALPHABET = new HashMap<>();
 
     static {
         ALPHABET.put('a',1);
@@ -55,8 +68,16 @@ public class Validator {
         ALPHABET.put('x',25);
         ALPHABET.put('y',26);
         ALPHABET.put('z',27);
+        ALPHABET.put('á',28);//agregar las otras faltantes
+        ALPHABET.put('é',29);
+        ALPHABET.put('í',30);
+        ALPHABET.put('ó',31);
+        ALPHABET.put('ú',32);
+        ALPHABET.put(' ',33);
+        ALPHABET.put('.',34);
+        ALPHABET.put(',',35);
     }
-
+*/
     /**
      * El metodo esNumero valida que se ingrese un número entero, procesando datos no deseados hasta que se ingrese
      * una opción del menú entre 1 y 4.
@@ -133,23 +154,14 @@ public class Validator {
      */
         public static boolean isAValidKey(int key) {
         // Key check
-            if(key>0 && key<27){
+            if(key>0 && key< (ALFABETO.length-1)){
                 return true;
             } else{
-                System.out.println("Digite un número clave entre 1 y 26."); //A + 27 = Z
+                int limite = ALFABETO.length - 2;
+                System.out.println("Digite un número clave entre 1 y " + limite +"."); //A + 27 = Z
                 return false;
             }
         }
-
-    /**
-     * Verifica si el archivo que contiene el mensaje a procesar existe
-     * @param filePath variable tipo Path que contiene la ubicación y nombre del archivo
-     * @return true/false si el archivo existe o no
-     */
-    public static boolean isFileExists(Path filePath) {
-        // Check if the file exists
-        return Files.exists(filePath);
-    }
 
     /**
      * Calcula el número de posición de las nuevas letras para cifrar/descifrar el mensaje, a partir del número de clave
@@ -157,9 +169,15 @@ public class Validator {
      * alfabeto
      */
     private static final BiFunction<Character, Integer, Integer> desplazarLetra =
-            (letra, key) -> (ALPHABET.get(letra) + (key % 27) > 27)
-                    ? ALPHABET.get(letra) + (key % 27) - 27
-                    : ALPHABET.get(letra) + (key % 27);
+        (letra, key) -> (ALPHABET.get(letra) + (key % (ALFABETO.length-1)) > (ALFABETO.length-1))//ALPHABET.lenght()
+        ? ALPHABET.get(letra) + (key % (ALFABETO.length-1)) - (ALFABETO.length-1)
+        : ALPHABET.get(letra) + (key % (ALFABETO.length-1));
+            //(letra, key) -> (ALPHABET.get(letra) + (key % 27) > 27)//ALPHABET.lenght()
+            //        ? ALPHABET.get(letra) + (key % 27) - 27
+            //        : ALPHABET.get(letra) + (key % 27);
+    //(letra, key) -> (ALPHABET.get(letra) + (key % 27) > 27)//ALPHABET.lenght()
+    //        ? ALPHABET.get(letra) + (key % 27) - 27
+    //        : ALPHABET.get(letra) + (key % 27);
 
     /**
      * Proceso que se encarga de cifrar/descifrar el mensaje
@@ -176,6 +194,10 @@ public class Validator {
                 nuevaLetra = desplazarLetra.apply(character, key);
                 character = Character.toUpperCase(ALFABETO[nuevaLetra]);
             } else if (Character.isLowerCase(character)) {
+                // Desplazamiento para letras minúsculas
+                nuevaLetra = desplazarLetra.apply(character, key);
+                character = ALFABETO[nuevaLetra]; //Verificación
+            } else {
                 // Desplazamiento para letras minúsculas
                 nuevaLetra = desplazarLetra.apply(character, key);
                 character = ALFABETO[nuevaLetra]; //Verificación

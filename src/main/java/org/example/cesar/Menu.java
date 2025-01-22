@@ -6,8 +6,7 @@ import java.util.Scanner;
 import static org.example.cesar.BruteForce.decryptByBruteForce;
 import static org.example.cesar.FileManager.readFile;
 import static org.example.cesar.FileManager.writeFile;
-import static org.example.cesar.Validator.toValid;
-import static org.example.cesar.Validator.esNumero;
+import static org.example.cesar.Validator.*;
 
 //pasos para trabajar con git en intellij
 //https://www.youtube.com/watch?v=G5tvUmPe7ok
@@ -19,6 +18,7 @@ public class Menu {
     /**
      * Ruta del archivo que tiene el mensaje a encriptar
      **/
+    //Ruta del archivo debe ser relativo y debe ser digitado por consola
     private static final String INPUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\entrada.txt";
     /**
      * Ruta del archivo que almacena el mensaje encriptado
@@ -46,7 +46,7 @@ public class Menu {
      * Entrada al menu del programa.
      * Muestra el menú de opciones y captura las entradas del usuario para ejecutar las acciones correspondientes.
      */
-    public static void seleccionar() {
+    public static void iniciar() {
 
         int opcion; //Seleccionar la opción a realizar
         int key; //Número de clave de desplazamiento de las letras en el mensaje
@@ -74,7 +74,7 @@ public class Menu {
                 case 2: //Decifrar el mensaje contenido en un archivo a partir de una clave de desplazamiento conocida
                     key = toValid();
                     try {
-                        mensaje = readFile(OUT_FILE_PATH, 27 - key); //decifrar
+                        mensaje = readFile(OUT_FILE_PATH, (ALFABETO.length-1) - key); //decifrar
                         System.out.println(mensaje);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
