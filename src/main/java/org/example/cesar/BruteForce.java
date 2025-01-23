@@ -22,8 +22,7 @@ public class BruteForce {
                 String[] words = mensaje.toLowerCase().split("\\W+");
                     for (String word : words) {
                         if (keywords.contains(word)) {
-                            int claveDescifrada = ALPHABET.size() - i;//i - 1;
-                            System.out.println("CLAVE DE DESCIFRADO CÉSAR ES es: " + claveDescifrada + "\n");
+                            System.out.println("CLAVE DE DESCIFRADO CÉSAR ES es: " + i + "\n");
                             claveEncontrada = true;
                             System.out.println(mensaje);
                             break;

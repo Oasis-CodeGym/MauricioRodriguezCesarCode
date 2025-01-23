@@ -11,11 +11,9 @@ public class AlphabetMap {
 
     public static Map<Character, Integer> convertirAHashMap() {
         Map<Character, Integer> alfabetoMap = new HashMap<>();
-
         for (int i = 1; i < ALFABETO.length; i++) {
             alfabetoMap.put(ALFABETO[i], i);
         }
-
         return alfabetoMap;
     }
 

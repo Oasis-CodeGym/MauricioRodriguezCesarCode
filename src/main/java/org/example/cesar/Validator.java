@@ -31,7 +31,7 @@ public class Validator {
     public static HashMap<Character, Integer> convertirAHashMap() {
         HashMap<Character, Integer> alfabetoMap = new HashMap<>();
 
-        for (int i = 0; i < ALFABETO.length; i++) {
+        for (int i = 1; i < ALFABETO.length; i++) {
             alfabetoMap.put(ALFABETO[i], i);
         }
         return alfabetoMap;
