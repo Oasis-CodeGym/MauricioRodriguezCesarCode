@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.example.cesar.Cipher.ALPHABET;
 import static org.example.cesar.FileManager.readFile;
-import static org.example.cesar.Validator.ALFABETO;
-import static org.example.cesar.Validator.ALPHABET;
 
 public class BruteForce {
     public static void decryptByBruteForce(String filePath) {

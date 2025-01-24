@@ -8,6 +8,7 @@ import static org.example.cesar.BruteForce.decryptByBruteForce;
 import static org.example.cesar.FileManager.readFile;
 import static org.example.cesar.FileManager.writeFile;
 import static org.example.cesar.Validator.*;
+import static org.example.cesar.Cipher.ALFABETO;
 
 //pasos para trabajar con git en intellij
 //https://www.youtube.com/watch?v=G5tvUmPe7ok
@@ -20,11 +21,14 @@ public class Menu {
      * Ruta del archivo que tiene el mensaje a encriptar
      **/
     //Ruta del archivo debe ser relativo y debe ser digitado por consola
-    private static final String INPUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\entrada.txt";
+    private static Scanner entrada = new Scanner(System.in);
+    private static String rutaArchivo;
+    private static File archivoAbrir;
+    //private static final String INPUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\entrada.txt";
     /**
      * Ruta del archivo que almacena el mensaje encriptado
      */
-    private static final String OUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\salida.txt";
+    //private static final String OUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\salida.txt";
 
     /**
      * Menú de opciones
@@ -43,6 +47,13 @@ public class Menu {
         System.out.println("Seleccione una opción del menú: ");
     }
 
+    public static void errorEnArchivo(){
+        System.out.println("El archivo no existe en la ruta proporcionada.");
+        System.out.println("Ingresa una ruta válida para abrir el archivo: ");
+
+        rutaArchivo = entrada.nextLine();
+        archivoAbrir = new File(rutaArchivo);
+    }
     /**
      * Entrada al menu del programa.
      * Muestra el menú de opciones y captura las entradas del usuario para ejecutar las acciones correspondientes.
@@ -53,7 +64,7 @@ public class Menu {
         int key; //Número de clave de desplazamiento de las letras en el mensaje
         String mensaje;
 
-        Scanner entrada = new Scanner(System.in);
+//        Scanner entrada = new Scanner(System.in);
 
         menuPrincipal();
 
@@ -62,18 +73,19 @@ public class Menu {
         do {
             switch (opcion) {
                 case 1: //Cifrar el mensaje contenido en un archivo a partir de la clave de desplazamiento proporcionada
-                    String rutaArchivo;
+    //                String rutaArchivo;
                     System.out.println("Ingresa una ruta válida para abrir el archivo: ");
                     //Ejemplo de rutas
                     //../cesar/src/entrada.txt = dentro de la carpeta src
                     //../entrada.txt =  dentro de la carpeta Proyecto Modulo 1
                     rutaArchivo = entrada.nextLine();
-                    File archivoAbrir = new File(rutaArchivo);
+                    archivoAbrir = new File(rutaArchivo);
                     while(!archivoAbrir.exists()) {
-                        System.out.println("El archivo no existe en la ruta proporcionada.");
-                        System.out.println("Ingresa una ruta válida para abrir el archivo: ");
-                        rutaArchivo = entrada.nextLine();
-                        archivoAbrir = new File(rutaArchivo);
+                    //    System.out.println("El archivo no existe en la ruta proporcionada.");
+                    //    System.out.println("Ingresa una ruta válida para abrir el archivo: ");
+                    //    rutaArchivo = entrada.nextLine();
+                    //    archivoAbrir = new File(rutaArchivo);
+                        errorEnArchivo();
                     }
                     key = toValid();
                     try {
@@ -90,24 +102,24 @@ public class Menu {
                     opcion = 0; //Reinicia la variable para cargar el menú
                     break;
                 case 2: //Decifrar el mensaje contenido en un archivo a partir de una clave de desplazamiento conocida
-                    String rutaArchivoLeer;
+                    //String rutaArchivoLeer;
                     System.out.println("Ingresa una ruta válida para abrir el archivo: ");
                     //Ejemplo de rutas
                     //../cesar/src/entrada.txt = dentro de la carpeta src
                     //../entrada.txt =  dentro de la carpeta Proyecto Modulo 1
                     //System.getProperty("user.home") + "/OneDrive/Documents/archivo.txt" =  carpeta documentos
-                    rutaArchivoLeer = entrada.nextLine();
-                    File archivoLeer = new File(rutaArchivoLeer);
+                    rutaArchivo = entrada.nextLine();
+                    File archivoLeer = new File(rutaArchivo);
                     while(!archivoLeer.exists()) {
                         System.out.println("El archivo no existe en la ruta proporcionada.");
                         System.out.println("Ingresa una ruta válida para abrir el archivo: ");
-                        rutaArchivoLeer = entrada.nextLine();
-                        archivoLeer = new File(rutaArchivoLeer);
+                        rutaArchivo = entrada.nextLine();
+                        archivoLeer = new File(rutaArchivo);
                     }
                     key = toValid();
                     try {
                     //    mensaje = readFile(OUT_FILE_PATH, (ALFABETO.length-1) - key); //decifrar
-                        mensaje = readFile(rutaArchivoLeer, (ALFABETO.length-1) - key); //decifrar
+                        mensaje = readFile(rutaArchivo, (ALFABETO.length-1) - key); //decifrar
                         System.out.println(mensaje);
                     } catch (IOException | NullPointerException e) {
                         System.out.println("Error al leer o escribir en el archivo");

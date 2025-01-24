@@ -8,76 +8,15 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.BiFunction;
 import static org.example.cesar.Menu.menuPrincipal;
+import static org.example.cesar.Cipher.ALFABETO;
+import static org.example.cesar.Cipher.ALPHABET;
 
 /**
  * Clase para validar el número de clave de desplazamiento de las letras del mensaje dentro de un rango de numeración
  * válida, acorde con el alfabeto en Español, y transformar el mensaje tanto para ocultarlo como para descifrarlo.
  **/
 public class Validator {
-    /**
-     * Arreglo de tipo char que contiene las letras del alfabeto en español incluyendo la letra ñ
-     */
-    public static final char[] ALFABETO = {'ª','a','b','c','d','e','f','g','h','i',
-                                            'j','k','l','m','n','ñ','o','p','q','r',
-                                            's','t','u','v','w','x','y','z','á','é',
-                                            'í','ó','ú',' ','.',','};
-    /**
-     * Arreglo de tipo HashMap que contiene las letras del alfabeto en español como clave y un entero asociado al número
-     * de posición correspondiente
-     */
 
-    Map<Character, Integer> alfabetoMap = convertirAHashMap();
-
-    public static HashMap<Character, Integer> convertirAHashMap() {
-        HashMap<Character, Integer> alfabetoMap = new HashMap<>();
-
-        for (int i = 1; i < ALFABETO.length; i++) {
-            alfabetoMap.put(ALFABETO[i], i);
-        }
-        return alfabetoMap;
-    }
-
-    public static final HashMap<Character,Integer> ALPHABET = convertirAHashMap();
-/*    public static final HashMap<Character,Integer> ALPHABET = new HashMap<>();
-
-    static {
-        ALPHABET.put('a',1);
-        ALPHABET.put('b',2);
-        ALPHABET.put('c',3);
-        ALPHABET.put('d',4);
-        ALPHABET.put('e',5);
-        ALPHABET.put('f',6);
-        ALPHABET.put('g',7);
-        ALPHABET.put('h',8);
-        ALPHABET.put('i',9);
-        ALPHABET.put('j',10);
-        ALPHABET.put('k',11);
-        ALPHABET.put('l',12);
-        ALPHABET.put('m',13);
-        ALPHABET.put('n',14);
-        ALPHABET.put('ñ',15);
-        ALPHABET.put('o',16);
-        ALPHABET.put('p',17);
-        ALPHABET.put('q',18);
-        ALPHABET.put('r',19);
-        ALPHABET.put('s',20);
-        ALPHABET.put('t',21);
-        ALPHABET.put('u',22);
-        ALPHABET.put('v',23);
-        ALPHABET.put('w',24);
-        ALPHABET.put('x',25);
-        ALPHABET.put('y',26);
-        ALPHABET.put('z',27);
-        ALPHABET.put('á',28);//agregar las otras faltantes
-        ALPHABET.put('é',29);
-        ALPHABET.put('í',30);
-        ALPHABET.put('ó',31);
-        ALPHABET.put('ú',32);
-        ALPHABET.put(' ',33);
-        ALPHABET.put('.',34);
-        ALPHABET.put(',',35);
-    }
-*/
     /**
      * El metodo esNumero valida que se ingrese un número entero, procesando datos no deseados hasta que se ingrese
      * una opción del menú entre 1 y 4.
@@ -163,15 +102,10 @@ public class Validator {
             }
         }
 
-    /**
-     * Calcula el número de posición de las nuevas letras para cifrar/descifrar el mensaje, a partir del número de clave
-     * ingresado por el usuario, asignando las nuevas letras correspondiente a la posición del arreglo creado del
-     * alfabeto
-     */
-    private static final BiFunction<Character, Integer, Integer> desplazarLetra =
-        (letra, key) -> (ALPHABET.get(letra) + (key % (ALFABETO.length-1)) > (ALFABETO.length-1))//ALPHABET.lenght()
-        ? ALPHABET.get(letra) + (key % (ALFABETO.length-1)) - (ALFABETO.length-1)
-        : ALPHABET.get(letra) + (key % (ALFABETO.length-1));
+//    private static final BiFunction<Character, Integer, Integer> desplazarLetra =
+//        (letra, key) -> (ALPHABET.get(letra) + (key % (ALFABETO.length-1)) > (ALFABETO.length-1))//ALPHABET.lenght()
+//        ? ALPHABET.get(letra) + (key % (ALFABETO.length-1)) - (ALFABETO.length-1)
+//        : ALPHABET.get(letra) + (key % (ALFABETO.length-1));
             //(letra, key) -> (ALPHABET.get(letra) + (key % 27) > 27)//ALPHABET.lenght()
             //        ? ALPHABET.get(letra) + (key % 27) - 27
             //        : ALPHABET.get(letra) + (key % 27);
@@ -179,30 +113,24 @@ public class Validator {
     //        ? ALPHABET.get(letra) + (key % 27) - 27
     //        : ALPHABET.get(letra) + (key % 27);
 
-    /**
-     * Proceso que se encarga de cifrar/descifrar el mensaje
-     * @param processedLine variable tipo string que contiene una línea del mensaje a cifrar/descifrar
-     * @param key variable tipo entero que contiene el número de clave de desplazamiento de las letras en el mensaje
-     * @param cifrado variable tipo StringBuilder que contiene la nueva linea del mensaje cifrado/descifrado
-     */
-    public static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
-        for (char character : processedLine.toCharArray()) {
-            int nuevaLetra;
-            if (Character.isUpperCase(character)) {
-                // Desplazamiento para letras mayúsculas
-                character = Character.toLowerCase(character);
-                nuevaLetra = desplazarLetra.apply(character, key);
-                character = Character.toUpperCase(ALFABETO[nuevaLetra]);
-            } else if (Character.isLowerCase(character)) {
+//    public static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
+//        for (char character : processedLine.toCharArray()) {
+//            int nuevaLetra;
+//            if (Character.isUpperCase(character)) {
+//                // Desplazamiento para letras mayúsculas
+//                character = Character.toLowerCase(character);
+//                nuevaLetra = desplazarLetra.apply(character, key);
+//                character = Character.toUpperCase(ALFABETO[nuevaLetra]);
+//            } else if (Character.isLowerCase(character)) {
                 // Desplazamiento para letras minúsculas
-                nuevaLetra = desplazarLetra.apply(character, key);
-                character = ALFABETO[nuevaLetra]; //Verificación
-            } else {
-                // Desplazamiento para letras minúsculas
-                nuevaLetra = desplazarLetra.apply(character, key);
-                character = ALFABETO[nuevaLetra]; //Verificación
-            }
-            cifrado.append(character);
-        }
-    }
+///                nuevaLetra = desplazarLetra.apply(character, key);
+//                character = ALFABETO[nuevaLetra]; //Verificación
+//            } else {
+//                // Desplazamiento para letras minúsculas
+//                nuevaLetra = desplazarLetra.apply(character, key);
+//                character = ALFABETO[nuevaLetra]; //Verificación
+//            }
+//            cifrado.append(character);
+//        }
+//    }
 }
