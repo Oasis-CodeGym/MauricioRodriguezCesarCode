@@ -3,7 +3,6 @@ package org.example.cesar;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.function.BiFunction;
 
 public class Cipher {
@@ -16,12 +15,6 @@ public class Cipher {
             'j','k','l','m','n','ñ','o','p','q','r',
             's','t','u','v','w','x','y','z','á','é',
             'í','ó','ú',' ','.',','};
-    /**
-     * Arreglo de tipo HashMap que contendrá las letras del alfabeto en español como clave y un entero asociado al número
-     * de posición correspondiente
-     */
-
-    Map<Character, Integer> alfabetoMap = convertirAHashMap();
 
     /**
      * El método convertirAHashmap se encarga de crear el arreglo tipo HashMap del alfabeto y los carácteres especiales
@@ -29,7 +22,7 @@ public class Cipher {
      * decodificación del mensaje.
      * @return alfabetoMap que contiene el diccionario del alfabeto asociado a un número.
      */
-    public static HashMap<Character, Integer> convertirAHashMap() {
+    public static HashMap<Character, Integer> convertirAHashMap() { //Puedo usar un indexOf() del array char para hacer esta parte
         HashMap<Character, Integer> alfabetoMap = new HashMap<>();
 
         for (int i = 1; i < ALFABETO.length; i++) {
@@ -38,6 +31,10 @@ public class Cipher {
         return alfabetoMap;
     }
 
+    /**
+     * Arreglo de tipo HashMap que contendrá las letras del alfabeto en español como clave y un entero asociado al número
+     * de posición correspondiente
+     */
     public static final HashMap<Character,Integer> ALPHABET = convertirAHashMap();
 
     /**
@@ -57,6 +54,8 @@ public class Cipher {
      * @param cifrado variable tipo StringBuilder que contiene la nueva linea del mensaje cifrado/descifrado
      */
     public static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
+        //public static void procesar(@NotNull String processedLine, int key){
+        //StringBuilder cifrado;
         for (char character : processedLine.toCharArray()) {
             int nuevaLetra;
             if (Character.isUpperCase(character)) {
@@ -69,7 +68,7 @@ public class Cipher {
                 nuevaLetra = desplazarLetra.apply(character, key);
                 character = ALFABETO[nuevaLetra]; //Verificación
             } else {
-                // Desplazamiento para letras minúsculas
+                // Desplazamiento para carácteres especiales
                 nuevaLetra = desplazarLetra.apply(character, key);
                 character = ALFABETO[nuevaLetra]; //Verificación
             }

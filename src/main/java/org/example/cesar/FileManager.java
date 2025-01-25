@@ -6,12 +6,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.example.cesar.Cipher.procesar;
-import static org.example.cesar.Validator.*;
 
 /**
  * Clase para validar archivos, al momento de abrir y crear.
  */
 public class FileManager {
+
     /**
      * Logger: para registrar errores o eventos relevantes
      * y poderlos almacenar en un archivo.
@@ -26,7 +26,8 @@ public class FileManager {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
                 String processedLine;
                 while ((processedLine = reader.readLine()) != null) {
-                    procesar(processedLine, key, cifrado);
+                    procesar(processedLine, key, cifrado); //Por qué enviar cifrado si es una variable que es null?
+                //    procesar(processedLine, key); //Por qué enviar cifrado si es una variable que es null?
                     cifrado.append(System.lineSeparator()); //salto de línea
                 }
             } catch (IOException | FileWriteException e ) {
@@ -54,7 +55,7 @@ public class FileManager {
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream))) {
             writer.write(content);
             writer.newLine(); // Agrega una nueva línea para cada línea procesada
-        } catch (IOException e) {
+        } catch (IOException e) {//se generó un error al escribir la ruta y presionar espacio
             throw new RuntimeException("Error al escribir en el archivo", e);        }
     }
 

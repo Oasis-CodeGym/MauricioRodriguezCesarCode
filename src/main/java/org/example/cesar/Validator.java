@@ -2,14 +2,10 @@ package org.example.cesar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.function.BiFunction;
 import static org.example.cesar.Menu.menuPrincipal;
 import static org.example.cesar.Cipher.ALFABETO;
-import static org.example.cesar.Cipher.ALPHABET;
 
 /**
  * Clase para validar el número de clave de desplazamiento de las letras del mensaje dentro de un rango de numeración

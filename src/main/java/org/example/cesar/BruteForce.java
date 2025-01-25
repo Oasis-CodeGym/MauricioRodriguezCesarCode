@@ -14,8 +14,6 @@ public class BruteForce {
         for(int i = 0; i <= ALPHABET.size(); i++){
             try {
                 String mensaje = readFile(filePath, ALPHABET.size() - i); //decifrar
-//                String mensaje = readFile(filePath, (ALFABETO.length - i -1)); //decifrar
-                //System.out.println("Mensaje descifrado con clave " + i + ":");
                 boolean claveEncontrada = false;
                 Set<String> keywords = getStrings();
                 String[] words = mensaje.toLowerCase().split("\\W+");
