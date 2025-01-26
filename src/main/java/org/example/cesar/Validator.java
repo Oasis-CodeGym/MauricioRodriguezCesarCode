@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import static org.example.cesar.Menu.getEntrada;
 import static org.example.cesar.Menu.menuPrincipal;
 import static org.example.cesar.Cipher.ALFABETO;
 
@@ -12,6 +14,22 @@ import static org.example.cesar.Cipher.ALFABETO;
  * válida, acorde con el alfabeto en Español, y transformar el mensaje tanto para ocultarlo como para descifrarlo.
  **/
 public class Validator {
+
+    private static String[] validExtensions = {"txt", "doc"};
+
+    public static String[] getValidExtensions() {
+        return validExtensions;
+    }
+
+    private static String rutaArchivo;
+
+    public static String getRutaArchivo() {
+        return rutaArchivo;
+    }
+
+    public static void setRutaArchivo(String rutaArchivo) {
+        Validator.rutaArchivo = rutaArchivo;
+    }
 
     /**
      * El metodo esNumero valida que se ingrese un número entero, procesando datos no deseados hasta que se ingrese
@@ -24,7 +42,8 @@ public class Validator {
         while (true) {
             try {
                 // Verifica si la entrada es un número entero
-                String option = entrada.nextLine().trim();
+                //String option = entrada.nextLine().trim();
+                String option = getEntrada().nextLine().trim();
                 opcion = checkNumber(option);
                 if (opcion > 0 && opcion < 5) {
                     break;  // Sale del bucle si el número es válido
@@ -35,13 +54,13 @@ public class Validator {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada no válida. Debes ingresar un número entero.");
-                entrada.next(); // Descarta el dato no valido de la entrada
+                //entrada.next(); // Descarta el dato no valido de la entrada
+                getEntrada().next(); // Descarta el dato no valido de la entrada
                 menuPrincipal();
             }
         }
         return opcion;
     }
-
 
     /**
      * Verifica si la entrada ingresada por el usuario es un número entero
@@ -62,26 +81,29 @@ public class Validator {
      * @return clave retorna un número entero si cumple las condiciones
      */
 
-        public static int toValid(){
+        private static int toValid(){
             int clave;
-            Scanner entrada = new Scanner(System.in);
+            //Scanner entrada = new Scanner(System.in);
             while(true){
                 System.out.println("Digite un número válido para la clave César:");
                 try{
                     // Verifica si la entrada es un número entero
-                    String dato = entrada.nextLine().trim();
+                    String dato = getEntrada().nextLine().trim();
                     clave = checkNumber(dato);
                         if(isAValidKey(clave)) {
                             break;  // Sale del bucle si el número es válido
                         }
                 } catch(InputMismatchException e){
                     System.out.println("Entrada no válida. Debes ingresar un número entero.");
-                    entrada.next(); // Descarta la entrada no válida
+                    getEntrada().next(); // Descarta la entrada no válida
                 }
             }
             return clave;
         }
 
+        public static int setToValid(){
+            return toValid();
+        }
     /**
      *
      * @param key variable tipo entero que contiene el número de clave de desplazamiento de las letras en el mensaje
@@ -98,35 +120,28 @@ public class Validator {
             }
         }
 
-//    private static final BiFunction<Character, Integer, Integer> desplazarLetra =
-//        (letra, key) -> (ALPHABET.get(letra) + (key % (ALFABETO.length-1)) > (ALFABETO.length-1))//ALPHABET.lenght()
-//        ? ALPHABET.get(letra) + (key % (ALFABETO.length-1)) - (ALFABETO.length-1)
-//        : ALPHABET.get(letra) + (key % (ALFABETO.length-1));
-            //(letra, key) -> (ALPHABET.get(letra) + (key % 27) > 27)//ALPHABET.lenght()
-            //        ? ALPHABET.get(letra) + (key % 27) - 27
-            //        : ALPHABET.get(letra) + (key % 27);
-    //(letra, key) -> (ALPHABET.get(letra) + (key % 27) > 27)//ALPHABET.lenght()
-    //        ? ALPHABET.get(letra) + (key % 27) - 27
-    //        : ALPHABET.get(letra) + (key % 27);
+    /**
+     * Valida que la extensión del archivo que se crea, exista o sea valido
+     * @param nombreArchivo variable que contiene la ruta con el nombre del archivo con la extensión creada
+     * @return false si la extensión no es válida o no existe
+     */
+    private static boolean validExtension(String nombreArchivo) {
+        int indicePunto = nombreArchivo.lastIndexOf(".");
+        if (indicePunto == -1 || indicePunto == nombreArchivo.length() - 1){//indicePunto == nombreArchivo.length() - 1) {
+            return false; // No tiene extensión válida
+        }
+        String extension = nombreArchivo.substring(indicePunto + 1).toLowerCase();
 
-//    public static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
-//        for (char character : processedLine.toCharArray()) {
-//            int nuevaLetra;
-//            if (Character.isUpperCase(character)) {
-//                // Desplazamiento para letras mayúsculas
-//                character = Character.toLowerCase(character);
-//                nuevaLetra = desplazarLetra.apply(character, key);
-//                character = Character.toUpperCase(ALFABETO[nuevaLetra]);
-//            } else if (Character.isLowerCase(character)) {
-                // Desplazamiento para letras minúsculas
-///                nuevaLetra = desplazarLetra.apply(character, key);
-//                character = ALFABETO[nuevaLetra]; //Verificación
-//            } else {
-//                // Desplazamiento para letras minúsculas
-//                nuevaLetra = desplazarLetra.apply(character, key);
-//                character = ALFABETO[nuevaLetra]; //Verificación
-//            }
-//            cifrado.append(character);
-//        }
-//    }
+        for (String ext : validExtensions) {
+            if (extension.equals(ext)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean callValidExtension(){
+        return validExtension(rutaArchivo);
+    }
+
 }

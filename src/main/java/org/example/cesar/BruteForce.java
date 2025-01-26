@@ -3,17 +3,18 @@ package org.example.cesar;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.nio.file.InvalidPathException;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.example.cesar.Cipher.ALPHABET;
-import static org.example.cesar.FileManager.readFile;
+import static org.example.cesar.FileManager.callReadFile;
 
 public class BruteForce {
     public static void decryptByBruteForce(String filePath) {
         for(int i = 0; i <= ALPHABET.size(); i++){
             try {
-                String mensaje = readFile(filePath, ALPHABET.size() - i); //decifrar
+                String mensaje = callReadFile(filePath, ALPHABET.size() - i); //decifrar
                 boolean claveEncontrada = false;
                 Set<String> keywords = getStrings();
                 String[] words = mensaje.toLowerCase().split("\\W+");
@@ -27,9 +28,10 @@ public class BruteForce {
                     }
                     if(claveEncontrada) break;
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Error de lectura o escritura de archivo");
             }
         }
+        System.out.println("Mensaje no encriptado como clave César" + "\n");
     }
 
     @NotNull

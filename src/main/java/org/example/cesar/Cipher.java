@@ -22,9 +22,8 @@ public class Cipher {
      * decodificación del mensaje.
      * @return alfabetoMap que contiene el diccionario del alfabeto asociado a un número.
      */
-    public static HashMap<Character, Integer> convertirAHashMap() { //Puedo usar un indexOf() del array char para hacer esta parte
+    public static HashMap<Character, Integer> convertirAHashMap() { //Puedo usar un indexOf() del array char pero es más lento
         HashMap<Character, Integer> alfabetoMap = new HashMap<>();
-
         for (int i = 1; i < ALFABETO.length; i++) {
             alfabetoMap.put(ALFABETO[i], i);
         }
@@ -51,11 +50,8 @@ public class Cipher {
      * Proceso que se encarga de cifrar/descifrar el mensaje
      * @param processedLine variable tipo string que contiene una línea del mensaje a cifrar/descifrar
      * @param key variable tipo entero que contiene el número de clave de desplazamiento de las letras en el mensaje
-     * @param cifrado variable tipo StringBuilder que contiene la nueva linea del mensaje cifrado/descifrado
-     */
-    public static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
-        //public static void procesar(@NotNull String processedLine, int key){
-        //StringBuilder cifrado;
+     * */
+    private static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
         for (char character : processedLine.toCharArray()) {
             int nuevaLetra;
             if (Character.isUpperCase(character)) {
@@ -74,6 +70,11 @@ public class Cipher {
             }
             cifrado.append(character);
         }
+    }
+
+//    public static void llamarProcesar(String processedLine, int key, StringBuilder cifrado){
+    public static void llamarProcesar(String processedLine, int key, StringBuilder cifrado){
+        procesar(processedLine, key, cifrado);
     }
 
 }
