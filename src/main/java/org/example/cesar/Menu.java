@@ -16,8 +16,6 @@ public class Menu {
     /**
      * Ruta del archivo que tiene el mensaje a encriptar
      **/
-    //Ruta del archivo debe ser relativo y debe ser digitado por consola
-    //private static Scanner entrada = new Scanner(System.in);
     private static Scanner entrada;
 
     public static Scanner getEntrada() {
@@ -27,6 +25,9 @@ public class Menu {
         return entrada;
     }
 
+    /**
+     * Variable que contendrá la ruta del archivo a leer y/o escribir
+     */
     private static File archivoAbrir;
 
     public static File getArchivoAbrir(String path) {
@@ -34,10 +35,7 @@ public class Menu {
         return archivoAbrir;
     }
 
-    /**
-     * Ruta del archivo que almacena el mensaje encriptado
-     */
-    private static int opcion; //Seleccionar la opción a realizar
+    private static int opcion; //Seleccionar la opción del menú a realizar
 
     public static int getOpcion() {
         return opcion;

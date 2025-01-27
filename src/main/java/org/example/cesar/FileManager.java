@@ -21,7 +21,7 @@ public class FileManager {
         int key;
         String mensaje;
         System.out.println("Ingresa una ruta válida para abrir el archivo: ");
-        //Ejemplo de rutas
+        //Ejemplo de rutas:
         //../cesar/src/entrada.txt = dentro de la carpeta src
         //../entrada.txt =  dentro de la carpeta Proyecto Modulo 1
         setRutaArchivo(getEntrada().nextLine().trim());
@@ -41,13 +41,13 @@ public class FileManager {
                 while(true){
                     System.out.println("Ingresa la ruta donde quiere escribir el archivo: ");
                     setRutaArchivo(getEntrada().nextLine().trim());
-                    if (esRutaValida(getRutaArchivo()) && callValidExtension()){// && esExtensionValida(filePath)) {
+                    if (esRutaValida(getRutaArchivo()) && callValidExtension()){
                         //System.out.println("Ruta y extensión válidas.");
                         break;
                     }
                 }
                 writeFile(mensaje, getRutaArchivo());
-                System.out.println("\n" + "Mensaje: " + "\n" + mensaje);
+                System.out.println("\n" + "Mensaje: " + "\n" + mensaje + "\n");
                 } else{
                     System.out.println("No hay información contenida en el archivo.\n");
                 }
@@ -59,7 +59,6 @@ public class FileManager {
             key = setToValid();
             try {//try de descifrar con clave conocida
                 mensaje = readFile(getRutaArchivo().trim(), (ALFABETO.length-1) - (key%(ALFABETO.length-1))); //decifrar
-//                if(!mensaje.equals("")){
                 if(!mensaje.isEmpty()){
                     System.out.println("\n" + "Mensaje: " + "\n" + mensaje);
                 } else {
@@ -151,8 +150,7 @@ public class FileManager {
         }
     }
 
-
-    /////////OPCIÓN PARA MANEJAR LA EXCEPCIÓN COMPROBADA
+    /////////OPCIÓN PARA MANEJAR LA EXCEPCIÓN COMPROBADA AL ESCRIBIR EL ARCHIVO
     public static class FileWriteException extends RuntimeException {
         public FileWriteException(String mensaje, Throwable causa) {
             super(mensaje, causa);
@@ -163,13 +161,11 @@ public class FileManager {
         System.out.println("El archivo no existe en la ruta proporcionada.");
         System.out.println("Ingresa una ruta válida para abrir el archivo: ");
         setRutaArchivo(getEntrada().nextLine().trim());
-//        getArchivoAbrir(getRutaArchivo());
     }
 
     public static void callErrorEnArchivo(){
         errorEnArchivo();
     }
-
 }
 
 

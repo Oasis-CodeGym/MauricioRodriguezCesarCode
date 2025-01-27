@@ -1,11 +1,9 @@
 package org.example.cesar;
 
 import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-
 import static org.example.cesar.Cipher.ALPHABET;
 import static org.example.cesar.FileManager.callReadFile;
 
@@ -14,11 +12,10 @@ public class BruteForce {
         for(int i = 0; i <= ALPHABET.size(); i++){
             try {
                 String mensaje = callReadFile(filePath, ALPHABET.size() - i); //decifrar
-//                if(!mensaje.equals("")){
                 if(!mensaje.isEmpty()){
-                boolean claveEncontrada = false;
-                Set<String> keywords = getStrings();
-                String[] words = mensaje.toLowerCase().split("\\W+");
+                    boolean claveEncontrada = false;
+                    Set<String> keywords = getStrings();
+                    String[] words = mensaje.toLowerCase().split("\\W+");
                     for (String word : words) {
                         if (keywords.contains(word)) {
                             System.out.println("CLAVE DE DESCIFRADO CÉSAR ES es: " + i + "\n");
@@ -28,7 +25,7 @@ public class BruteForce {
                         }
                     }
                     if(claveEncontrada) break;
-                }else{
+                } else {
                     System.out.println("No hay información contenida en el archivo.\n");
                     break;
                 }

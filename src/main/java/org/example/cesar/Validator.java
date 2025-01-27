@@ -110,12 +110,9 @@ public class Validator {
      */
      public static boolean isAValidKey(int key) {
          int limite = Integer.MAX_VALUE;
-//        if(key>0 && key< (ALFABETO.length-1)){
          if(key > 0 && key < limite && (key % (ALFABETO.length-1) != 0)){
             return true;
          } else{
-//        int limite = ALFABETO.length - 2;
-//        System.out.println("Digite un número clave entre 1 y " + limite +".");
              System.out.println("Digite un número de clave válido, dentro del valor límite de 1 a " + limite +".");
              return false;
          }
