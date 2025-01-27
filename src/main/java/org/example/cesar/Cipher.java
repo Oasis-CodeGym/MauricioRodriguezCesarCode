@@ -13,7 +13,9 @@ public class Cipher {
      * Arreglo de tipo char que contiene las letras del alfabeto en español incluyendo la letra ñ
      * y algunos carácteres especiales utilizados en escritura
      */
-    public static final char[] ALFABETO = {'ª','a','b','c','d','e','f','g','h','i',
+    public static final char[] ALFABETO = {'ª',
+            '0','1','2','3','4','5','6','7','8','9',
+            'a','b','c','d','e','f','g','h','i',
             'j','k','l','m','n','ñ','o','p','q','r',
             's','t','u','v','w','x','y','z','á','é',
             'í','ó','ú',' ','.',','};
@@ -70,7 +72,7 @@ public class Cipher {
                     } else {
                         String permitidos = new String(ALFABETO);
                         if (permitidos.indexOf(character) == -1) {
-                            System.out.println("El carácter '" + character + "' no está dentro del arreglo permitido.");
+                            //System.out.println("El carácter '" + character + "' no está dentro del arreglo permitido.");
                             //return;
                         } else {
                             // Desplazamiento para carácteres especiales
