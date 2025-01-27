@@ -14,14 +14,12 @@ import static org.example.cesar.Validator.getRutaArchivo;
  * Clase para validar archivos, al momento de abrir y crear.
  */
 public class FileManager {
-    public static boolean escribir = false;
-    private static int key; //Número de clave de desplazamiento de las letras en el mensaje
-    private static String mensaje;
-
     /**
      * Método para abrir un archivo para leer el mensaje ya sea para cifrado o descifrado
      */
     private static void openFile(){
+        int key;
+        String mensaje;
         System.out.println("Ingresa una ruta válida para abrir el archivo: ");
         //Ejemplo de rutas
         //../cesar/src/entrada.txt = dentro de la carpeta src
@@ -39,16 +37,20 @@ public class FileManager {
             key = setToValid();
             try {
                 mensaje = readFile(getRutaArchivo(), key);
+                if(!mensaje.isEmpty()){
                 while(true){
                     System.out.println("Ingresa la ruta donde quiere escribir el archivo: ");
                     setRutaArchivo(getEntrada().nextLine().trim());
                     if (esRutaValida(getRutaArchivo()) && callValidExtension()){// && esExtensionValida(filePath)) {
-                        System.out.println("Ruta y extensión válidas.");
-                        break; // Salir del bucle si todo está bien
+                        //System.out.println("Ruta y extensión válidas.");
+                        break;
                     }
                 }
                 writeFile(mensaje, getRutaArchivo());
                 System.out.println("\n" + "Mensaje: " + "\n" + mensaje);
+                } else{
+                    System.out.println("No hay información contenida en el archivo.\n");
+                }
             } catch (IOException | InvalidPathException | FileManager.FileWriteException e) {
                 System.out.println("Error al leer o escribir en el archivo");
                 openFile();
@@ -56,8 +58,13 @@ public class FileManager {
         } else if(getOpcion() == 2){
             key = setToValid();
             try {//try de descifrar con clave conocida
-                mensaje = readFile(getRutaArchivo().trim(), (ALFABETO.length-1) - key); //decifrar
-                System.out.println("\n" + "Mensaje: " + "\n" + mensaje);
+                mensaje = readFile(getRutaArchivo().trim(), (ALFABETO.length-1) - (key%(ALFABETO.length-1))); //decifrar
+//                if(!mensaje.equals("")){
+                if(!mensaje.isEmpty()){
+                    System.out.println("\n" + "Mensaje: " + "\n" + mensaje);
+                } else {
+                    System.out.println("No hay información contenida en el archivo.\n");
+                }
             } catch (IOException | InvalidPathException | NullPointerException e) {
                 System.out.println("Error al leer o escribir en el archivo");
             }
@@ -84,13 +91,14 @@ public class FileManager {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
                 String processedLine;
                 while ((processedLine = reader.readLine()) != null) {
-                    llamarProcesar(processedLine, key, cifrado); //Por qué enviar cifrado si es una variable que es null?
+                    llamarProcesar(processedLine, key, cifrado);
                     cifrado.append(System.lineSeparator()); //salto de línea
                 }
             } catch (IOException | NullPointerException | FileWriteException e ) {
                 //e.printStackTrace();
                 //LOGGER.log(Level.SEVERE, "Error leyendo el archivo", e);
-                System.out.println("Error al escribir en el archivo: " + e);
+                System.out.println("Error al escribir en el archivo, \n no se escribió el nombre del archivo \n no existe o no se tiene acceso. \n" + e);
+                menuPrincipal();
             }
         return cifrado.toString();
     }
@@ -102,18 +110,17 @@ public class FileManager {
     private static boolean esRutaValida(String filePath) {
         try {
             Path path = Paths.get(filePath);
-
             // Verifica si el directorio padre existe o puede crearse
             Path parentDir = path.getParent();
             if (parentDir != null && Files.notExists(parentDir)) {
-                System.out.println("⚠️ La carpeta no existe. Creándola...");
+                System.out.println("La carpeta no existe. Creándola...");
                 Files.createDirectories(parentDir);
             }
             return true;
         } catch (InvalidPathException e) {
-            System.out.println("❌ Ruta inválida: " + e.getMessage());
+            System.out.println("Ruta inválida: " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("❌ No se pudo crear la carpeta: " + e.getMessage());
+            System.out.println("No se pudo crear la carpeta: " + e.getMessage());
         }
         return false;
     }
@@ -125,7 +132,6 @@ public class FileManager {
         //- Verifica internamente si el archivo existe.
         //- Lo crea si es necesario.
         try{
-//        Path outputPath = Paths.get(filePath); // Archivo de salida
             if (!Files.exists(outputPath)) {
                 Files.createFile(outputPath); // Crea el archivo si no existe
             }
@@ -134,7 +140,6 @@ public class FileManager {
             System.out.println("Error al escribir en archivo");
             callErrorEnArchivo();
         }
-        //
         try (OutputStream outputStream = Files.newOutputStream(outputPath);
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream))) {
             writer.write(content);

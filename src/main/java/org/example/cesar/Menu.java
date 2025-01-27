@@ -69,11 +69,8 @@ public class Menu {
      * Muestra el menú de opciones y captura las entradas del usuario para ejecutar las acciones correspondientes.
      */
     public static void iniciar() {
-
         menuPrincipal();
-
-        opcion = esNumero(getEntrada());
-
+        opcion = esNumero();
         do {
             switch (opcion) {
                 case 1: //Cifrar el mensaje contenido en un archivo a partir de la clave de desplazamiento proporcionada
@@ -89,10 +86,9 @@ public class Menu {
                     break;
                 default: //Mostrar el menú si el número ingresado no está entre el intervalo de selección
                     menuPrincipal();
-                    opcion = esNumero(getEntrada());
+                    opcion = esNumero();
             }
         } while(!(opcion==4)); //Termina el programa al seleccionar la opción del menú correspondiente
-
         getEntrada().close();
         System.out.println("Fin del programa.");
     }

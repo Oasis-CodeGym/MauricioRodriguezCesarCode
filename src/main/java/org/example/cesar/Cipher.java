@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.function.BiFunction;
 
+import static org.example.cesar.Menu.menuPrincipal;
+
 public class Cipher {
 
     /**
@@ -42,7 +44,7 @@ public class Cipher {
      * alfabeto
      */
     private static final BiFunction<Character, Integer, Integer> desplazarLetra =
-            (letra, key) -> (ALPHABET.get(letra) + (key % (ALFABETO.length-1)) > (ALFABETO.length-1))//ALPHABET.lenght()
+            (letra, key) -> (ALPHABET.get(letra) + (key % (ALFABETO.length-1)) > (ALFABETO.length-1))
                     ? ALPHABET.get(letra) + (key % (ALFABETO.length-1)) - (ALFABETO.length-1)
                     : ALPHABET.get(letra) + (key % (ALFABETO.length-1));
 
@@ -52,29 +54,40 @@ public class Cipher {
      * @param key variable tipo entero que contiene el número de clave de desplazamiento de las letras en el mensaje
      * */
     private static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
-        for (char character : processedLine.toCharArray()) {
-            int nuevaLetra;
-            if (Character.isUpperCase(character)) {
-                // Desplazamiento para letras mayúsculas
-                character = Character.toLowerCase(character);
-                nuevaLetra = desplazarLetra.apply(character, key);
-                character = Character.toUpperCase(ALFABETO[nuevaLetra]);
-            } else if (Character.isLowerCase(character)) {
-                // Desplazamiento para letras minúsculas
-                nuevaLetra = desplazarLetra.apply(character, key);
-                character = ALFABETO[nuevaLetra]; //Verificación
-            } else {
-                // Desplazamiento para carácteres especiales
-                nuevaLetra = desplazarLetra.apply(character, key);
-                character = ALFABETO[nuevaLetra]; //Verificación
+        try{
+            if(key % (ALFABETO.length-1) != 0) {
+                for (char character : processedLine.toCharArray()) {
+                    int nuevaLetra;
+                    if (Character.isUpperCase(character)) {
+                        // Desplazamiento para letras mayúsculas
+                        character = Character.toLowerCase(character);
+                        nuevaLetra = desplazarLetra.apply(character, key);
+                        character = Character.toUpperCase(ALFABETO[nuevaLetra]);
+                    } else if (Character.isLowerCase(character)) {
+                        // Desplazamiento para letras minúsculas
+                        nuevaLetra = desplazarLetra.apply(character, key);
+                        character = ALFABETO[nuevaLetra]; //Verificación
+                    } else {
+                        String permitidos = new String(ALFABETO);
+                        if (permitidos.indexOf(character) == -1) {
+                            System.out.println("El carácter '" + character + "' no está dentro del arreglo permitido.");
+                            //return;
+                        } else {
+                            // Desplazamiento para carácteres especiales
+                            nuevaLetra = desplazarLetra.apply(character, key);
+                            character = ALFABETO[nuevaLetra]; //Verificación
+                        }
+                    }
+                    cifrado.append(character);
+                }
             }
-            cifrado.append(character);
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("Clave fuera de rango.");
+            System.exit(0);
         }
     }
 
-//    public static void llamarProcesar(String processedLine, int key, StringBuilder cifrado){
     public static void llamarProcesar(String processedLine, int key, StringBuilder cifrado){
         procesar(processedLine, key, cifrado);
     }
-
 }

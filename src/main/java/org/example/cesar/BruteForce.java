@@ -3,7 +3,6 @@ package org.example.cesar;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.nio.file.InvalidPathException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +14,8 @@ public class BruteForce {
         for(int i = 0; i <= ALPHABET.size(); i++){
             try {
                 String mensaje = callReadFile(filePath, ALPHABET.size() - i); //decifrar
+//                if(!mensaje.equals("")){
+                if(!mensaje.isEmpty()){
                 boolean claveEncontrada = false;
                 Set<String> keywords = getStrings();
                 String[] words = mensaje.toLowerCase().split("\\W+");
@@ -27,30 +28,33 @@ public class BruteForce {
                         }
                     }
                     if(claveEncontrada) break;
+                }else{
+                    System.out.println("No hay información contenida en el archivo.\n");
+                    break;
+                }
             } catch (IOException e) {
                 System.out.println("Error de lectura o escritura de archivo");
             }
         }
-        System.out.println("Mensaje no encriptado como clave César" + "\n");
     }
 
     @NotNull
     private static Set<String> getStrings() {
         Set<String> keywords = new HashSet<>();
         keywords.add("con");
-//        keywords.add("de");
         keywords.add("desde");
-//        keywords.add("el");
-//        keywords.add("la");
         keywords.add("las");
         keywords.add("los");
         keywords.add("para");
         keywords.add("pero");
         keywords.add("por");
         keywords.add("que");
-//        keywords.add("se");
         keywords.add("sin");
         keywords.add("una");
+//        keywords.add("se");
+//        keywords.add("el");
+//        keywords.add("la");
+//        keywords.add("de");
         return keywords;
     }
 }
