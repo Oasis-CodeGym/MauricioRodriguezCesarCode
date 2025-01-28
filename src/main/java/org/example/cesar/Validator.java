@@ -2,94 +2,44 @@ package org.example.cesar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.function.BiFunction;
+
+import static org.example.cesar.Cipher.ALFABETO;
+import static org.example.cesar.Menu.getEntrada;
 import static org.example.cesar.Menu.menuPrincipal;
+//import static org.example.cesar.Cipher.ALFABETO;
 
 /**
  * Clase para validar el número de clave de desplazamiento de las letras del mensaje dentro de un rango de numeración
  * válida, acorde con el alfabeto en Español, y transformar el mensaje tanto para ocultarlo como para descifrarlo.
  **/
 public class Validator {
-    /**
-     * Arreglo de tipo char que contiene las letras del alfabeto en español incluyendo la letra ñ
-     */
-    public static final char[] ALFABETO = {'ª','a','b','c','d','e','f','g','h','i',
-                                            'j','k','l','m','n','ñ','o','p','q','r',
-                                            's','t','u','v','w','x','y','z','á','é',
-                                            'í','ó','ú',' ','.',','};
-    /**
-     * Arreglo de tipo HashMap que contiene las letras del alfabeto en español como clave y un entero asociado al número
-     * de posición correspondiente
-     */
 
-    Map<Character, Integer> alfabetoMap = convertirAHashMap();
+    private static final String[] validExtensions = {"txt", "doc"};
 
-    public static HashMap<Character, Integer> convertirAHashMap() {
-        HashMap<Character, Integer> alfabetoMap = new HashMap<>();
+    private static String rutaArchivo;
 
-        for (int i = 1; i < ALFABETO.length; i++) {
-            alfabetoMap.put(ALFABETO[i], i);
-        }
-        return alfabetoMap;
+    public static String getRutaArchivo() {
+        return rutaArchivo;
     }
 
-    public static final HashMap<Character,Integer> ALPHABET = convertirAHashMap();
-/*    public static final HashMap<Character,Integer> ALPHABET = new HashMap<>();
-
-    static {
-        ALPHABET.put('a',1);
-        ALPHABET.put('b',2);
-        ALPHABET.put('c',3);
-        ALPHABET.put('d',4);
-        ALPHABET.put('e',5);
-        ALPHABET.put('f',6);
-        ALPHABET.put('g',7);
-        ALPHABET.put('h',8);
-        ALPHABET.put('i',9);
-        ALPHABET.put('j',10);
-        ALPHABET.put('k',11);
-        ALPHABET.put('l',12);
-        ALPHABET.put('m',13);
-        ALPHABET.put('n',14);
-        ALPHABET.put('ñ',15);
-        ALPHABET.put('o',16);
-        ALPHABET.put('p',17);
-        ALPHABET.put('q',18);
-        ALPHABET.put('r',19);
-        ALPHABET.put('s',20);
-        ALPHABET.put('t',21);
-        ALPHABET.put('u',22);
-        ALPHABET.put('v',23);
-        ALPHABET.put('w',24);
-        ALPHABET.put('x',25);
-        ALPHABET.put('y',26);
-        ALPHABET.put('z',27);
-        ALPHABET.put('á',28);//agregar las otras faltantes
-        ALPHABET.put('é',29);
-        ALPHABET.put('í',30);
-        ALPHABET.put('ó',31);
-        ALPHABET.put('ú',32);
-        ALPHABET.put(' ',33);
-        ALPHABET.put('.',34);
-        ALPHABET.put(',',35);
+    public static void setRutaArchivo(String rutaArchivo) {
+        Validator.rutaArchivo = rutaArchivo;
     }
-*/
+
     /**
      * El metodo esNumero valida que se ingrese un número entero, procesando datos no deseados hasta que se ingrese
      * una opción del menú entre 1 y 4.
-     * @param entrada variable de tipo Scanner para capturar la entrada de datos del usuario.
+     * getEntrada() variable de tipo Scanner para capturar la entrada de datos del número de opción ql usuario.
      * @return opcion regresa un número entero válido, correspondiente a una de las opciones del menú.
      */
-    public static int esNumero(@org.jetbrains.annotations.NotNull Scanner entrada) {
+//    public static int esNumero(@org.jetbrains.annotations.NotNull Scanner entrada) {
+    public static int esNumero() {
         int opcion;
         while (true) {
             try {
                 // Verifica si la entrada es un número entero
-                String option = entrada.nextLine().trim();
+                String option = getEntrada().nextLine().trim();
                 opcion = checkNumber(option);
                 if (opcion > 0 && opcion < 5) {
                     break;  // Sale del bucle si el número es válido
@@ -100,13 +50,13 @@ public class Validator {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada no válida. Debes ingresar un número entero.");
-                entrada.next(); // Descarta el dato no valido de la entrada
+                //entrada.next(); // Descarta el dato no valido de la entrada
+                getEntrada().next(); // Descarta el dato no valido de la entrada
                 menuPrincipal();
             }
         }
         return opcion;
     }
-
 
     /**
      * Verifica si la entrada ingresada por el usuario es un número entero
@@ -115,8 +65,12 @@ public class Validator {
      */
     public static int checkNumber(@NotNull String valor){
         int num = 0;
-        if(valor.matches("\\d+")) {
-            num = Integer.parseInt(valor);
+        try{
+            if(valor.matches("\\d+")) {
+                num = Integer.parseInt(valor);
+            }
+        } catch (NumberFormatException e){
+            System.out.println("Se excede el límite del valor numérico definido.");
         }
         return num;
     }
@@ -127,82 +81,64 @@ public class Validator {
      * @return clave retorna un número entero si cumple las condiciones
      */
 
-        public static int toValid(){
-            int clave;
-            Scanner entrada = new Scanner(System.in);
-            while(true){
-                System.out.println("Digite un número válido para la clave César:");
-                try{
-                    // Verifica si la entrada es un número entero
-                    String dato = entrada.nextLine().trim();
-                    clave = checkNumber(dato);
-                        if(isAValidKey(clave)) {
-                            break;  // Sale del bucle si el número es válido
-                        }
-                } catch(InputMismatchException e){
-                    System.out.println("Entrada no válida. Debes ingresar un número entero.");
-                    entrada.next(); // Descarta la entrada no válida
-                }
-            }
-            return clave;
-        }
+     private static int toValid(){
+         int clave;
+         while(true){
+             System.out.println("Digite un número válido para la clave César:");
+             try{
+                 // Verifica si la entrada es un número entero
+                 String dato = getEntrada().nextLine().trim();
+                 clave = checkNumber(dato);
+                 if(isAValidKey(clave)) {
+                     break;  // Sale del bucle si el número es válido
+                 }
+             } catch(InputMismatchException e){
+                 System.out.println("Entrada no válida. Debes ingresar un número entero, no negativo.");
+                 getEntrada().next(); // Descarta la entrada no válida
+             }
+         }
+         return clave;
+     }
 
+        public static int setToValid(){
+            return toValid();
+        }
     /**
      *
      * @param key variable tipo entero que contiene el número de clave de desplazamiento de las letras en el mensaje
      * @return true/false retorna verdadero o falso si el número de la clave está o no dentro de un rango específico
      */
-        public static boolean isAValidKey(int key) {
-        // Key check
-            if(key>0 && key< (ALFABETO.length-1)){
+     public static boolean isAValidKey(int key) {
+         int limite = Integer.MAX_VALUE;
+         if(key > 0 && key < limite && (key % (ALFABETO.length-1) != 0)){
+            return true;
+         } else{
+             System.out.println("Digite un número de clave válido, dentro del valor límite de 1 a " + limite +".");
+             return false;
+         }
+     }
+
+    /**
+     * Valida que la extensión del archivo que se crea, exista o sea valido dentro del listado de excepciones
+     * en el arreglo validExtensions
+     * @param nombreArchivo variable que contiene la ruta con el nombre del archivo con la extensión creada
+     * @return false si la extensión no es válida o no existe
+     */
+    private static boolean validExtension(String nombreArchivo) {
+        int indicePunto = nombreArchivo.lastIndexOf(".");
+        if (indicePunto == -1 || indicePunto == nombreArchivo.length() - 1){
+            return false; // No tiene extensión válida
+        }
+        String extension = nombreArchivo.substring(indicePunto + 1).toLowerCase();
+        for (String ext : validExtensions) {
+            if (extension.equals(ext)) {
                 return true;
-            } else{
-                int limite = ALFABETO.length - 2;
-                System.out.println("Digite un número clave entre 1 y " + limite +"."); //A + 27 = Z
-                return false;
             }
         }
+        return false;
+    }
 
-    /**
-     * Calcula el número de posición de las nuevas letras para cifrar/descifrar el mensaje, a partir del número de clave
-     * ingresado por el usuario, asignando las nuevas letras correspondiente a la posición del arreglo creado del
-     * alfabeto
-     */
-    private static final BiFunction<Character, Integer, Integer> desplazarLetra =
-        (letra, key) -> (ALPHABET.get(letra) + (key % (ALFABETO.length-1)) > (ALFABETO.length-1))//ALPHABET.lenght()
-        ? ALPHABET.get(letra) + (key % (ALFABETO.length-1)) - (ALFABETO.length-1)
-        : ALPHABET.get(letra) + (key % (ALFABETO.length-1));
-            //(letra, key) -> (ALPHABET.get(letra) + (key % 27) > 27)//ALPHABET.lenght()
-            //        ? ALPHABET.get(letra) + (key % 27) - 27
-            //        : ALPHABET.get(letra) + (key % 27);
-    //(letra, key) -> (ALPHABET.get(letra) + (key % 27) > 27)//ALPHABET.lenght()
-    //        ? ALPHABET.get(letra) + (key % 27) - 27
-    //        : ALPHABET.get(letra) + (key % 27);
-
-    /**
-     * Proceso que se encarga de cifrar/descifrar el mensaje
-     * @param processedLine variable tipo string que contiene una línea del mensaje a cifrar/descifrar
-     * @param key variable tipo entero que contiene el número de clave de desplazamiento de las letras en el mensaje
-     * @param cifrado variable tipo StringBuilder que contiene la nueva linea del mensaje cifrado/descifrado
-     */
-    public static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
-        for (char character : processedLine.toCharArray()) {
-            int nuevaLetra;
-            if (Character.isUpperCase(character)) {
-                // Desplazamiento para letras mayúsculas
-                character = Character.toLowerCase(character);
-                nuevaLetra = desplazarLetra.apply(character, key);
-                character = Character.toUpperCase(ALFABETO[nuevaLetra]);
-            } else if (Character.isLowerCase(character)) {
-                // Desplazamiento para letras minúsculas
-                nuevaLetra = desplazarLetra.apply(character, key);
-                character = ALFABETO[nuevaLetra]; //Verificación
-            } else {
-                // Desplazamiento para letras minúsculas
-                nuevaLetra = desplazarLetra.apply(character, key);
-                character = ALFABETO[nuevaLetra]; //Verificación
-            }
-            cifrado.append(character);
-        }
+    public static boolean callValidExtension(){
+        return validExtension(rutaArchivo);
     }
 }

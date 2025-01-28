@@ -1,11 +1,9 @@
 package org.example.cesar;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.Scanner;
 
-import static org.example.cesar.BruteForce.decryptByBruteForce;
-import static org.example.cesar.FileManager.readFile;
-import static org.example.cesar.FileManager.writeFile;
+import static org.example.cesar.FileManager.*;
 import static org.example.cesar.Validator.*;
 
 //pasos para trabajar con git en intellij
@@ -18,12 +16,34 @@ public class Menu {
     /**
      * Ruta del archivo que tiene el mensaje a encriptar
      **/
-    //Ruta del archivo debe ser relativo y debe ser digitado por consola
-    private static final String INPUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\entrada.txt";
+    private static Scanner entrada;
+
+    public static Scanner getEntrada() {
+        if (entrada == null) {
+            entrada = new Scanner(System.in);
+        }
+        return entrada;
+    }
+
     /**
-     * Ruta del archivo que almacena el mensaje encriptado
+     * Variable que contendrá la ruta del archivo a leer y/o escribir
      */
-    private static final String OUT_FILE_PATH = "C:\\Users\\javie\\OneDrive\\Documents\\Java\\CodeGym\\Proyecto Modulo 1\\salida.txt";
+    private static File archivoAbrir;
+
+    public static File getArchivoAbrir(String path) {
+        archivoAbrir = new File(path);
+        return archivoAbrir;
+    }
+
+    private static int opcion; //Seleccionar la opción del menú a realizar
+
+    public static int getOpcion() {
+        return opcion;
+    }
+
+    public static void setOpcion(int opcion) {
+        Menu.opcion = opcion;
+    }
 
     /**
      * Menú de opciones
@@ -47,53 +67,27 @@ public class Menu {
      * Muestra el menú de opciones y captura las entradas del usuario para ejecutar las acciones correspondientes.
      */
     public static void iniciar() {
-
-        int opcion; //Seleccionar la opción a realizar
-        int key; //Número de clave de desplazamiento de las letras en el mensaje
-        String mensaje;
-
-        Scanner entrada = new Scanner(System.in);
-
         menuPrincipal();
-
-        opcion = esNumero(entrada);
-
+        opcion = esNumero();
         do {
             switch (opcion) {
                 case 1: //Cifrar el mensaje contenido en un archivo a partir de la clave de desplazamiento proporcionada
-                    key = toValid();
-                    try {
-                        mensaje = readFile(INPUT_FILE_PATH, key);
-                        writeFile(mensaje, OUT_FILE_PATH);
-                        System.out.println(mensaje);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    opcion = 0; //Reinicia la variable para cargar el menú
+                    callOpenFile();
                     break;
                 case 2: //Decifrar el mensaje contenido en un archivo a partir de una clave de desplazamiento conocida
-                    key = toValid();
-                    try {
-                        mensaje = readFile(OUT_FILE_PATH, (ALFABETO.length-1) - key); //decifrar
-                        System.out.println(mensaje);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    opcion = 0; //Reinicia la variable para cargar el menú
+                    callOpenFile();
                     break;
                 case 3:
                     //Ejecuta el contenido en la clase BruteForce.java, para descifrar el mensaje contenido en una
                     //ubicación específica del archivo
-                    decryptByBruteForce(OUT_FILE_PATH);
-                    opcion = 0; //Reinicia la variable para cargar el menú
+                    callOpenFile();
                     break;
                 default: //Mostrar el menú si el número ingresado no está entre el intervalo de selección
                     menuPrincipal();
-                    opcion = esNumero(entrada);
+                    opcion = esNumero();
             }
         } while(!(opcion==4)); //Termina el programa al seleccionar la opción del menú correspondiente
-
-        entrada.close();
+        getEntrada().close();
         System.out.println("Fin del programa.");
     }
 }
