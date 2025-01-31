@@ -18,7 +18,10 @@ public class Cipher {
             'a','b','c','d','e','f','g','h','i',
             'j','k','l','m','n','ñ','o','p','q','r',
             's','t','u','v','w','x','y','z','á','é',
-            'í','ó','ú',' ','.',','};
+            'í','ó','ú','A','B','C','D','E','F','G','H','I',
+            'J','K','L','M','N','Ñ','O','O','Q','R',
+            'S','T','U','V','W','X','Y','Z','Á','É',
+            'Í','Ó','Ú','Ü',' ','.',','};
 
     /**
      * El método convertirAHashmap se encarga de crear el arreglo tipo HashMap del alfabeto y los carácteres especiales
