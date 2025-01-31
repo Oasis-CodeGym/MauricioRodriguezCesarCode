@@ -5,8 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.function.BiFunction;
 
-import static org.example.cesar.Menu.menuPrincipal;
-
 public class Cipher {
 
     /**
@@ -29,7 +27,7 @@ public class Cipher {
      * decodificación del mensaje.
      * @return alfabetoMap que contiene el diccionario del alfabeto asociado a un número.
      */
-    public static HashMap<Character, Integer> convertirAHashMap() { //Puedo usar un indexOf() del array char pero es más lento
+    public static HashMap<Character, Integer> convertirAHashMap() {
         HashMap<Character, Integer> alfabetoMap = new HashMap<>();
         for (int i = 1; i < ALFABETO.length; i++) {
             alfabetoMap.put(ALFABETO[i], i);
@@ -44,9 +42,9 @@ public class Cipher {
     public static final HashMap<Character,Integer> ALPHABET = convertirAHashMap();
 
     /**
-     * Calcula el número de posición de las nuevas letras para cifrar/descifrar el mensaje, a partir del número de clave
-     * ingresado por el usuario, asignando las nuevas letras correspondiente a la posición del arreglo creado del
-     * alfabeto
+     * Función que toma 2 argumentos (letra y clave ingresada) y devuelve el número de la nueva
+     * posición de las letras para cifrar/descifrar el mensaje, asignando las nuevas letras correspondiente
+     * a la posición del arreglo creado del alfabeto
      */
     private static final BiFunction<Character, Integer, Integer> desplazarLetra =
             (letra, key) -> (ALPHABET.get(letra) + (key % (ALFABETO.length-1)) > (ALFABETO.length-1))
@@ -58,7 +56,9 @@ public class Cipher {
      * @param processedLine variable tipo string que contiene una línea del mensaje a cifrar/descifrar
      * @param key variable tipo entero que contiene el número de clave de desplazamiento de las letras en el mensaje
      * */
-    private static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
+//    public static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
+    public static String procesar(@NotNull String processedLine, int key){
+        StringBuilder cifrado = new StringBuilder();
         try{
             if(key % (ALFABETO.length-1) != 0) {
                 for (char character : processedLine.toCharArray()) {
@@ -86,13 +86,10 @@ public class Cipher {
                     cifrado.append(character);
                 }
             }
-        }catch(ArrayIndexOutOfBoundsException e){
+        }catch(ArrayIndexOutOfBoundsException e){ //Si no está contenido en el arreglo, finaliza el programa
             System.out.println("Clave fuera de rango.");
             System.exit(0);
         }
-    }
-
-    public static void llamarProcesar(String processedLine, int key, StringBuilder cifrado){
-        procesar(processedLine, key, cifrado);
+        return cifrado.toString();
     }
 }

@@ -1,3 +1,9 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+.idea
+src/main/java/org/example/cesar/ValidarRutaArchivo.java
+salidora.txt
+cifrado.txt
+/src/main/java/org/example/cesar/ValidarRutaArchivo.java
+/src/main/java/org/example/cesar/AlphabetMap.java
