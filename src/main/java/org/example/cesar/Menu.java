@@ -1,9 +1,14 @@
 package org.example.cesar;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.InvalidPathException;
 import java.util.Scanner;
 
-import static org.example.cesar.FileManager.*;
+import static org.example.cesar.BruteForce.decryptByBruteForce;
+import static org.example.cesar.Cipher.ALFABETO;
+import static org.example.cesar.FileManager.readFile;
+import static org.example.cesar.FileManager.writeFile;
 import static org.example.cesar.Validator.*;
 
 //pasos para trabajar con git en intellij
@@ -23,26 +28,6 @@ public class Menu {
             entrada = new Scanner(System.in);
         }
         return entrada;
-    }
-
-    /**
-     * Variable que contendrá la ruta del archivo a leer y/o escribir
-     */
-    private static File archivoAbrir;
-
-    public static File getArchivoAbrir(String path) {
-        archivoAbrir = new File(path);
-        return archivoAbrir;
-    }
-
-    private static int opcion; //Seleccionar la opción del menú a realizar
-
-    public static int getOpcion() {
-        return opcion;
-    }
-
-    public static void setOpcion(int opcion) {
-        Menu.opcion = opcion;
     }
 
     /**
@@ -68,19 +53,57 @@ public class Menu {
      */
     public static void iniciar() {
         menuPrincipal();
-        opcion = esNumero();
+        int opcion = esNumero();
+        int key;
+        String mensaje;
+        String modo;
         do {
             switch (opcion) {
                 case 1: //Cifrar el mensaje contenido en un archivo a partir de la clave de desplazamiento proporcionada
-                    callOpenFile();
+                    modo = "Cifrar";
+                    validToOpen(modo);
+                    key = toValid(modo);
+                    try {
+                        mensaje = readFile(getRutaArchivo(), key);
+                        if(!mensaje.isEmpty()){
+                            while(true){
+                                System.out.println("Ingresa la ruta donde quiere escribir el archivo: ");
+                                setRutaArchivo(getEntrada().nextLine().trim());
+                                if (esRutaValida(getRutaArchivo()) && callValidExtension()) break;
+                            }
+                            writeFile(mensaje, getRutaArchivo());
+                            System.out.println("\n" + "Mensaje: " + "\n" + mensaje + "\n");
+                            opcion = 0;
+                        } else{
+                            System.out.println("No hay información contenida en el archivo.\n");
+                        }
+                    } catch (IOException | InvalidPathException e){//| FileManager.FileWriteException e) {
+                        System.out.println("Error al leer o escribir en el archivo");
+                        System.exit(0);
+                    }
                     break;
                 case 2: //Decifrar el mensaje contenido en un archivo a partir de una clave de desplazamiento conocida
-                    callOpenFile();
+                    modo = "Descifrar";
+                    validToOpen(modo);
+                    key = toValid(modo);
+                    try {//try de descifrar con clave conocida
+                        mensaje = readFile(getRutaArchivo().trim(), (ALFABETO.length-1) - (key%(ALFABETO.length-1))); //decifrar
+                        if(!mensaje.isEmpty()){
+                            System.out.println("\n" + "Mensaje: " + "\n" + mensaje);
+                        } else {
+                            System.out.println("No hay información contenida en el archivo.\n");
+                        }
+                    } catch (IOException | InvalidPathException | NullPointerException e) {
+                        System.out.println("Error al leer o escribir en el archivo");
+                    }
+                    opcion = 0;
                     break;
                 case 3:
                     //Ejecuta el contenido en la clase BruteForce.java, para descifrar el mensaje contenido en una
                     //ubicación específica del archivo
-                    callOpenFile();
+                    validToOpen("Descifrar por método Fuerza Bruta");
+                    decryptByBruteForce(getRutaArchivo().trim());
+                    opcion = 0;
                     break;
                 default: //Mostrar el menú si el número ingresado no está entre el intervalo de selección
                     menuPrincipal();
@@ -91,4 +114,3 @@ public class Menu {
         System.out.println("Fin del programa.");
     }
 }
-

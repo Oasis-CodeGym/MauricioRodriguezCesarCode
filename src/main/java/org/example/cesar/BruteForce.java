@@ -5,13 +5,21 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import static org.example.cesar.Cipher.ALPHABET;
-import static org.example.cesar.FileManager.callReadFile;
+import static org.example.cesar.FileManager.readFile;
 
 public class BruteForce {
+    /**
+     * Método de desencriptado por BruteForce
+     * Descencripta el mensaje iterando la longitud del tamaño del array del alfabeto (ALPHABET). En cada iteración
+     * compara las palabras del mensaje con las que se encuentra en el arreglo keywords y en el caso
+     * de que alguna palabra coincida, se da terminada la descencriptación del mensaje, indicando
+     * el número de clave con la cual se encriptó.
+     * @param filePath contiene la ruta del archivo que se leerá para descencriptar
+     */
     public static void decryptByBruteForce(String filePath) {
         for(int i = 0; i <= ALPHABET.size(); i++){
             try {
-                String mensaje = callReadFile(filePath, ALPHABET.size() - i); //decifrar
+                String mensaje = readFile(filePath, ALPHABET.size() - i); //decifrar
                 if(!mensaje.isEmpty()){
                     boolean claveEncontrada = false;
                     Set<String> keywords = getStrings();
@@ -35,6 +43,11 @@ public class BruteForce {
         }
     }
 
+    /**
+     * Palabras claves usadas para comparación y ayudar a determinar la clave del mensaje encriptado
+     * @return el arreglo de las palabras claves utilizadas para comparar con las palabras
+     * del mensaje que se va encriptando con cada iteración.
+     */
     @NotNull
     private static Set<String> getStrings() {
         Set<String> keywords = new HashSet<>();
@@ -48,10 +61,6 @@ public class BruteForce {
         keywords.add("que");
         keywords.add("sin");
         keywords.add("una");
-//        keywords.add("se");
-//        keywords.add("el");
-//        keywords.add("la");
-//        keywords.add("de");
         return keywords;
     }
 }
