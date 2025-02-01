@@ -28,8 +28,6 @@ public class FileManager {
          BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
         String processedLine;
         while ((processedLine = reader.readLine()) != null) {
-//            procesar(processedLine, key, cifrado);//Se pasa cifrado para que en el método de la clase Cipher, apunte el mensaje en la misma dirección
-//            procesar(processedLine, key);
             cifrado.append(procesar(processedLine, key));
             cifrado.append(System.lineSeparator()); //salto de línea
         }

@@ -1,6 +1,5 @@
 package org.example.cesar;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.util.Scanner;
