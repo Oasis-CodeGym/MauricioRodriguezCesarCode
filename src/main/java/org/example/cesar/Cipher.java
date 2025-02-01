@@ -57,7 +57,7 @@ public class Cipher {
      * @param key variable tipo entero que contiene el número de clave de desplazamiento de las letras en el mensaje
      * */
 //    public static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
-    public static String procesar(@NotNull String processedLine, int key){
+    public static String procesar(String processedLine, int key){
         StringBuilder cifrado = new StringBuilder();
         try{
             if(key % (ALFABETO.length-1) != 0) {
