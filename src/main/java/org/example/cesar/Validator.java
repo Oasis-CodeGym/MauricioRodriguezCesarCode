@@ -20,7 +20,7 @@ import static org.example.cesar.Menu.*;
 public class Validator {
 
     /**
-     * Extensiones con las que se desea trabajar
+     * Extensiones con las que se desea trabajar.
      */
     private static final String[] validExtensions = {"txt", "doc"};
 
