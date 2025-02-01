@@ -12,8 +12,7 @@ public class BruteForce {
     public static void decryptByBruteForce(String filePath) {
         for(int i = 1; i <= 27; i++){
             try {
-                String mensaje = readFile(filePath, 27 - i); //decifrar
-                //System.out.println("Mensaje descifrado con clave " + i + ":");
+                String mensaje = readFile(filePath, 27 - i); //decifrar.gi
                 boolean claveEncontrada = false;
                 Set<String> keywords = getStrings();
                 String[] words = mensaje.toLowerCase().split("\\W+");
