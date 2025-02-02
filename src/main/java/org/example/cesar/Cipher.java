@@ -55,8 +55,6 @@ public class Cipher {
      *
      * @param key variable tipo entero que contiene el número de clave de desplazamiento de las letras en el mensaje
      */
-//    public static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
-//    public static String procesar(String processedLine, int key){
     public static String procesar(StringBuilder cifrado, int key){
         //Verifica si existe el archivo
         StringBuilder cifrando = new StringBuilder();
@@ -83,7 +81,7 @@ public class Cipher {
             }
         } catch (IOException | ArrayIndexOutOfBoundsException e) {
             //throw new RuntimeException(e);
-            System.out.println("Clave fuera de rango.");
+            System.out.println("Error al leer el archivo o clave fuera de rango.");
             System.exit(0);
         }
         if(cifrando.toString().equals(""))

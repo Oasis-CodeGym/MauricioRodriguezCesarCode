@@ -64,7 +64,6 @@ public class Validator {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada no válida. Debes ingresar un número entero.");
-                //entrada.next(); // Descarta el dato no valido de la entrada
                 getEntrada().next(); // Descarta el dato no valido de la entrada
                 menuPrincipal();
             }

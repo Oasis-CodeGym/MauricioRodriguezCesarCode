@@ -20,7 +20,6 @@ public class FileManager {
      * @throws IOException en caso de error en lectura del archivo se manejará la excepción, cargando el menú principal
      * reiniciando el programa.
      */
-//    public static String readFile(String filePath, int key) throws IOException {
     public static StringBuilder readFile(String filePath, int key) throws IOException {
     Path inputPath = Paths.get(filePath);
     StringBuilder cifrado = new StringBuilder();
@@ -29,7 +28,6 @@ public class FileManager {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));) {
         String processedLine;
         while ((processedLine = reader.readLine()) != null) {
-            //cifrado.append(procesar(processedLine, key));
             cifrado.append(processedLine);
             cifrado.append(System.lineSeparator()); //salto de línea
         }

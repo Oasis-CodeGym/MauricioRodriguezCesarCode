@@ -21,13 +21,11 @@ public class BruteForce {
         StringBuilder mensaje;
         for(int i = 0; i <= ALPHABET.size(); i++){
             try {
-//                mensaje = readFile(filePath, ALPHABET.size() - i); //decifrar texto
                 mensaje = readFile(filePath, ALPHABET.size() - i); //decifrar texto
                 String descifrar = procesar(mensaje, ALPHABET.size() - i);
                 if(!descifrar.isEmpty()){//lee la primera vez y luego lee el mensaje vacío
                     boolean claveEncontrada = false;
                     Set<String> keywords = getStrings();
-//                    String[] words = mensaje.toLowerCase().split("\\W+");
                     String[] words = descifrar.split("\\W+");
                     for (String word : words) {
                         if (keywords.contains(word)) {
