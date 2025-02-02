@@ -1,7 +1,6 @@
 package org.example.cesar;
 
-import org.jetbrains.annotations.NotNull;
-
+import java.io.*;
 import java.util.HashMap;
 import java.util.function.BiFunction;
 
@@ -53,16 +52,21 @@ public class Cipher {
 
     /**
      * Proceso que se encarga de cifrar/descifrar el mensaje
-     * @param processedLine variable tipo string que contiene una línea del mensaje a cifrar/descifrar
+     *
      * @param key variable tipo entero que contiene el número de clave de desplazamiento de las letras en el mensaje
-     * */
+     */
 //    public static void procesar(@NotNull String processedLine, int key, StringBuilder cifrado){
-    public static String procesar(String processedLine, int key){
-        StringBuilder cifrado = new StringBuilder();
+//    public static String procesar(String processedLine, int key){
+    public static String procesar(StringBuilder cifrado, int key){
+        //Verifica si existe el archivo
+        StringBuilder cifrando = new StringBuilder();
         try{
-            if(key % (ALFABETO.length-1) != 0) {
-                for (char character : processedLine.toCharArray()) {
-                    int nuevaLetra;
+            BufferedReader reader = new BufferedReader(new StringReader(cifrado.toString()));
+            String processedLine;
+            while ((processedLine = reader.readLine()) != null) {
+                if(key % (ALFABETO.length-1) != 0) {//El problema está acá
+                    for (char character : processedLine.toCharArray()) {
+                        int nuevaLetra;
                         String permitidos = new String(ALFABETO);
                         if (permitidos.indexOf(character) == -1) {
                             //System.out.println("El carácter '" + character + "' no está dentro del arreglo permitido.");
@@ -72,13 +76,20 @@ public class Cipher {
                             nuevaLetra = desplazarLetra.apply(character, key);
                             character = ALFABETO[nuevaLetra]; //Verificación
                         }
-                    cifrado.append(character);
+                        cifrando.append(character);
+                    }
+                    cifrando.append(System.lineSeparator());
                 }
             }
-        }catch(ArrayIndexOutOfBoundsException e){ //Si no está contenido en el arreglo, finaliza el programa
+        } catch (IOException | ArrayIndexOutOfBoundsException e) {
+            //throw new RuntimeException(e);
             System.out.println("Clave fuera de rango.");
             System.exit(0);
         }
-        return cifrado.toString();
+        if(cifrando.toString().equals(""))
+            return cifrado.toString();
+        else
+            return cifrando.toString();
     }
 }
+
